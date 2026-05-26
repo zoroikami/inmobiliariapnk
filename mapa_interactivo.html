@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<!-- Mapa Interactivo - Inmobiliaria PNK - Powered by Leaflet.js -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Mapa interactivo de propiedades - Inmobiliaria PNK.">
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <title>Mapa Interactivo - Inmobiliaria PNK</title>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/mapa.css">
+</head>
+
+<body>
+
+    <div class="dashboard">
+
+        <!-- PANEL LATERAL -->
+        <aside class="info-panel" id="infoPanel">
+            <div class="panel-header">
+                <h1 style="margin:0; font-size: 1.2rem; letter-spacing: 2px;">INMOBILIARIA <span
+                        style="color:var(--dynasty-gold)">PNK</span></h1>
+            </div>
+
+            <!-- Filtros por categoría -->
+            <div class="filter-tabs-container">
+                <div class="filter-tabs-row">
+                    <button class="filter-tab active" data-cat="todas"><i class="fas fa-globe"></i> Todas</button>
+                    <button class="filter-tab" data-cat="casa"><i class="fas fa-home"></i> Casas</button>
+                    <button class="filter-tab" data-cat="depto"><i class="fas fa-building"></i> Deptos</button>
+                    <button class="filter-tab" data-cat="terreno"><i class="fas fa-mountain"></i> Terrenos</button>
+                </div>
+
+                <!-- Filtro de precio -->
+                <div class="price-filter">
+                    <div class="price-filter-row">
+                        <span class="price-label">Precio UF:</span>
+                        <span id="precioMinLabel" class="price-value">UF 0</span>
+                        <span class="price-sep">—</span>
+                        <span id="precioMaxLabel" class="price-value">UF 10.000</span>
+                    </div>
+                    <div class="price-sliders">
+                        <input type="range" id="precioMin" min="0" max="10000" value="0" step="100">
+                        <input type="range" id="precioMax" min="0" max="10000" value="10000" step="100">
+                    </div>
+                </div>
+
+                <div class="results-counter" id="propCounter">Mostrando 0 de 0 propiedades</div>
+            </div>
+
+            <div class="panel-content">
+
+                <!-- Mensaje cuando no hay selección -->
+                <div class="selection-prompt" id="selectionPrompt" style="display:none;">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <h2>MAPA INTERACTIVO</h2>
+                    <p>Selecciona un marcador en el mapa para ver los detalles de la propiedad disponible.</p>
+                </div>
+
+                <!-- Lista de propiedades (renderizada por JS) -->
+                <div id="propList" class="prop-list"></div>
+
+                <!-- Detalle de propiedad seleccionada (renderizado por JS) -->
+                <div id="propDetail" class="prop-detail" style="display:none;"></div>
+
+            </div>
+
+            <div style="padding: 15px; background: #f0f0f0; border-top: 1px solid #ddd; text-align: center;">
+                <a href="index.html" style="color: #666; text-decoration: none; font-size: 0.8rem;">
+                    <i class="fas fa-arrow-left"></i> Volver al Inicio
+                </a>
+            </div>
+        </aside>
+
+        <!-- MAPA LEAFLET -->
+        <main class="map-view">
+            <div id="map"></div>
+
+            <!-- Controles flotantes -->
+            <div class="map-controls">
+                <button class="map-control-btn" id="btnVerTodas" title="Ver todas las propiedades">
+                    <i class="fas fa-expand-arrows-alt"></i>
+                </button>
+                <button class="map-control-btn" id="btnGeolocate" title="Mi ubicación">
+                    <i class="fas fa-crosshairs"></i>
+                </button>
+            </div>
+
+            <!-- Toggle panel en mobile -->
+            <button class="mobile-panel-toggle" id="btnTogglePanel">
+                <i class="fas fa-list"></i>
+                <span>Propiedades</span>
+            </button>
+        </main>
+    </div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<!-- App Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="js/utils.js"></script>
+<script src="js/notifications.js"></script>
+<script src="js/app.js"></script>
+<script src="js/mapa.js"></script>
+
+</body>
+
+</html>

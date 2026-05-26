@@ -1,0 +1,614 @@
+/* ============================================================
+   INMOBILIARIA PNK — Mapa Interactivo CSS
+   Leaflet.js + Panel Lateral + Filtros + Responsive
+   ============================================================ */
+
+:root {
+    --dynasty-green: #2b7a3e;
+    --dynasty-gold: #f7cb2f;
+    --panel-width: 400px;
+}
+
+body,
+html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    overflow: hidden;
+    background: #1a1a1a;
+}
+
+/* ── Layout Principal ── */
+.dashboard {
+    display: grid;
+    grid-template-columns: var(--panel-width) 1fr;
+    height: 100vh;
+    height: 100dvh;
+}
+
+/* ── Panel Lateral ── */
+.info-panel {
+    background: #fff;
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.3);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    border-right: 4px solid var(--dynasty-gold);
+    max-height: 100vh;
+    max-height: 100dvh;
+}
+
+.panel-header {
+    background: var(--dynasty-green);
+    color: white;
+    padding: 18px 20px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.panel-content {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+    background: #fdfdfd;
+    -webkit-overflow-scrolling: touch;
+    min-height: 0;
+}
+
+/* ── Scrollbar Personalizado ── */
+.panel-content::-webkit-scrollbar { width: 6px; }
+.panel-content::-webkit-scrollbar-track { background: #f1f5f9; }
+.panel-content::-webkit-scrollbar-thumb { background: var(--dynasty-green); border-radius: 10px; }
+.panel-content::-webkit-scrollbar-thumb:hover { background: var(--dynasty-gold); }
+
+/* ── Filtros ── */
+.filter-tabs-container {
+    background: #0f172a;
+    padding: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
+}
+
+.filter-tabs-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    padding: 10px 10px 6px;
+}
+
+.filter-tab {
+    padding: 10px 4px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #64748b;
+    font-weight: 700;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+    border: 1px solid transparent;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.filter-tab:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.filter-tab.active {
+    background: var(--dynasty-green);
+    color: #fff;
+    border-color: var(--dynasty-gold);
+}
+
+.filter-tab i {
+    font-size: 0.7rem;
+}
+
+/* ── Filtro de Precio ── */
+.price-filter {
+    padding: 10px 14px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.price-filter-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+.price-label {
+    font-size: 0.65rem;
+    color: #64748b;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.price-value {
+    font-size: 0.7rem;
+    color: var(--dynasty-gold);
+    font-weight: 700;
+}
+
+.price-sep {
+    color: #475569;
+    font-size: 0.7rem;
+}
+
+.price-sliders {
+    display: flex;
+    gap: 8px;
+}
+
+.price-sliders input[type="range"] {
+    flex: 1;
+    -webkit-appearance: none;
+    height: 4px;
+    background: #334155;
+    border-radius: 2px;
+    outline: none;
+}
+
+.price-sliders input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    background: var(--dynasty-gold);
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+.results-counter {
+    padding: 8px 14px;
+    background: rgba(255,255,255,0.03);
+    color: #94a3b8;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+/* ── Lista de Propiedades ── */
+.prop-list {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.prop-card {
+    display: flex;
+    gap: 12px;
+    padding: 10px;
+    background: #fff;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    border: 2px solid transparent;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.prop-card:hover {
+    border-color: var(--dynasty-green);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+.prop-card-active {
+    border-color: var(--dynasty-gold) !important;
+    background: #fffbeb;
+}
+
+.prop-card img {
+    width: 90px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.prop-card-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.prop-card-price {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--dynasty-green);
+    margin-bottom: 2px;
+}
+
+.prop-card-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.prop-card-location {
+    font-size: 0.7rem;
+    color: #6b7280;
+    margin-bottom: 4px;
+}
+
+.prop-card-location i {
+    color: var(--dynasty-green);
+    margin-right: 4px;
+}
+
+.prop-card-features {
+    display: flex;
+    gap: 8px;
+}
+
+.prop-card-features span {
+    font-size: 0.65rem;
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+/* ── Lista vacía ── */
+.empty-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    color: #94a3b8;
+    text-align: center;
+}
+
+.empty-list i {
+    font-size: 3rem;
+    margin-bottom: 16px;
+    color: #e2e8f0;
+}
+
+.empty-list p {
+    font-size: 0.85rem;
+}
+
+/* ── Detalle de Propiedad ── */
+.prop-detail {
+    padding: 20px;
+    padding-bottom: 40px;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.btn-back-detail {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: 1px solid #e2e8f0;
+    color: #64748b;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    margin-bottom: 16px;
+    font-family: 'Inter', sans-serif;
+}
+
+.btn-back-detail:hover {
+    background: #f1f5f9;
+    color: var(--dynasty-green);
+    border-color: var(--dynasty-green);
+}
+
+.prop-detail img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.prop-detail h2 {
+    color: var(--dynasty-green);
+    margin: 0 0 8px 0;
+    font-size: 1.3rem;
+}
+
+.detail-location,
+.detail-type {
+    font-size: 0.8rem;
+    color: #6b7280;
+    margin-bottom: 6px;
+}
+
+.detail-location i,
+.detail-type i {
+    color: var(--dynasty-green);
+    margin-right: 6px;
+    width: 14px;
+}
+
+.detail-desc {
+    font-size: 0.85rem;
+    color: #475569;
+    line-height: 1.6;
+    margin-bottom: 16px;
+}
+
+.price {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #1f2937;
+    display: inline-block;
+}
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.feature-item {
+    background: #f8fafc;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    color: #475569;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 1px solid #e2e8f0;
+    transition: 0.2s;
+}
+
+.feature-item:hover {
+    background: #fff;
+    border-color: var(--dynasty-green);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.extras-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 20px;
+}
+
+.extra-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #ecfdf5;
+    color: var(--dynasty-green);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.extra-tag i {
+    font-size: 0.6rem;
+}
+
+.btn-buy {
+    background: var(--dynasty-green);
+    color: white;
+    text-decoration: none;
+    padding: 14px;
+    display: block;
+    text-align: center;
+    border-radius: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+}
+
+.btn-buy:hover {
+    background: #1f5a2d;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(43, 122, 62, 0.4);
+}
+
+/* ── Mensaje inicial ── */
+.selection-prompt {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 40px;
+    text-align: center;
+    color: #94a3b8;
+}
+
+.selection-prompt i {
+    font-size: 5rem;
+    margin-bottom: 20px;
+    color: #e2e8f0;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.05); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 0.5; }
+}
+
+/* ── Mapa Leaflet ── */
+.map-view {
+    position: relative;
+    overflow: hidden;
+}
+
+#map {
+    width: 100%;
+    height: 100vh;
+    z-index: 1;
+}
+
+/* ── Tooltip personalizado de Leaflet ── */
+.pnk-tooltip {
+    background: #1f2937 !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 8px 14px !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 0.8rem !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+}
+
+.pnk-tooltip::before {
+    border-top-color: #1f2937 !important;
+}
+
+/* ── Pin personalizado ── */
+.pnk-map-pin {
+    background: transparent !important;
+    border: none !important;
+}
+
+/* ── Controles Flotantes ── */
+.map-controls {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.map-control-btn {
+    width: 44px;
+    height: 44px;
+    background: #fff;
+    border: none;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1rem;
+    color: #475569;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: all 0.2s;
+}
+
+.map-control-btn:hover {
+    background: var(--dynasty-green);
+    color: #fff;
+    transform: scale(1.05);
+}
+
+/* ── Toggle Panel Mobile ── */
+.mobile-panel-toggle {
+    display: none;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    background: var(--dynasty-green);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 14px 28px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(43,122,62,0.4);
+    font-family: 'Inter', sans-serif;
+    gap: 8px;
+    align-items: center;
+}
+
+.mobile-panel-toggle i {
+    font-size: 1rem;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
+
+    .info-panel {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100vh;
+        height: 100dvh;
+        transform: translateX(-100%);
+        transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        z-index: 2000;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .info-panel .panel-content {
+        flex: 1;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        min-height: 0;
+    }
+
+    .info-panel.panel-open {
+        transform: translateX(0);
+    }
+
+    .mobile-panel-toggle {
+        display: flex;
+    }
+
+    .map-controls {
+        top: 12px;
+        right: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    :root {
+        --panel-width: 100%;
+    }
+
+    .prop-card img {
+        width: 70px;
+        height: 70px;
+    }
+
+    .features {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

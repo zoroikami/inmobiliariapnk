@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Panel del propietario - Inmobiliaria PNK.">
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <title>Inmobiliaria PNK - Dashboard Propietario</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="d-flex">
+    <aside class="sidebar">
+        <div class="profile">
+            <div class="avatar"><i class="fas fa-key text-warning"></i></div>
+            <h3>Propietario</h3>
+            <p>propietario@pnk.cl</p>
+        </div>
+        <nav>
+            <a href="dashboard_propietario.html" class="active"><i class="fas fa-th-large"></i> Dashboard</a>
+            <a href="mapa_interactivo.html"><i class="fas fa-search"></i> Ver Mapa de Propiedades</a>
+            <div class="mt-auto pt-4">
+                <a href="login.html" class="text-danger"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main">
+        <header class="topbar border-bottom pb-3 mb-5">
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <div>
+                    <h4 class="mb-0 text-muted">Bienvenido: <span class="text-dark fw-bold">PROPIETARIO</span></h4>
+                </div>
+                <a href="login.html" class="btn btn-outline-danger btn-sm px-4 rounded-pill">
+                    <i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión
+                </a>
+            </div>
+        </header>
+
+        <div class="container py-4 text-center">
+            <div class="bg-white p-5 rounded-4 shadow-sm border border-success border-opacity-10 mb-5">
+                <h2 class="fw-bold mb-4">Gestión de Mis Inmuebles</h2>
+                <p class="text-muted">Como propietario, puedes ver el estado de tus publicaciones y contactar a tu gestor asignado.</p>
+                <div class="row g-3 mt-4 justify-content-center">
+                    <div class="col-auto">
+                        <div class="bg-success bg-opacity-10 text-success p-3 rounded-3 text-center" style="min-width: 120px;">
+                            <div class="fw-bold fs-3" id="statMisInmuebles">0</div>
+                            <div class="small">Mis Inmuebles</div>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="bg-warning bg-opacity-10 text-warning p-3 rounded-3 text-center" style="min-width: 120px;">
+                            <div class="fw-bold fs-3" id="statMisArrendados">0</div>
+                            <div class="small">Arrendados</div>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="bg-primary bg-opacity-10 text-primary p-3 rounded-3 text-center" style="min-width: 120px;">
+                            <div class="fw-bold fs-3" id="statMisPublicados">0</div>
+                            <div class="small">Publicados</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="fw-bold mb-4 text-start">Mis Publicaciones</h3>
+            <div class="row g-4 text-start" id="misPropiedadesGrid">
+                <!-- Renderizado dinámicamente por JS -->
+            </div>
+
+            <div class="text-center mt-5">
+                <a href="mapa_interactivo.html" class="btn btn-outline-success btn-lg rounded-pill px-5 fw-bold">
+                    <i class="fas fa-map-marked-alt me-2"></i> Ver Mapa Interactivo
+                </a>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="js/utils.js"></script>
+<script src="js/notifications.js"></script>
+<script src="js/app.js"></script>
+<script src="js/auth.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var session = PNK.protectRoute(['propietario']);
+        PNK.showUserInfo();
+        PNK.setupLogout();
+
+        if (!session) return;
+
+        var propiedades = PNK.getData(PNK.KEYS.PROPIEDADES);
+        var misProps = propiedades.filter(function(p) { return p.propietarioId === session.id; });
+
+        // Estadísticas
+        document.getElementById('statMisInmuebles').textContent = misProps.length;
+        document.getElementById('statMisArrendados').textContent = misProps.filter(function(p) { return p.estado === 'arrendado'; }).length;
+        document.getElementById('statMisPublicados').textContent = misProps.filter(function(p) { return p.estado === 'publicado'; }).length;
+
+        // Renderizar propiedades
+        var grid = document.getElementById('misPropiedadesGrid');
+        if (misProps.length === 0) {
+            grid.innerHTML = '<div class="col-12 text-center py-5"><i class="fas fa-home fa-3x text-muted mb-3 d-block"></i><p class="text-muted">No tienes propiedades registradas aún.</p></div>';
+            return;
+        }
+
+        var html = '';
+        misProps.forEach(function(p) {
+            var statusBadge = PNK.getStatusBadge(p.estado);
+            var precio = p.precioUF ? PNK.formatUF(p.precioUF) : PNK.formatCLP(p.precioCLP);
+            if (p.operacion === 'Arriendo') precio += ' / mes';
+
+            html += '<div class="col-md-6">';
+            html += '<div class="card border-0 shadow-sm rounded-4 overflow-hidden">';
+            html += '<img src="' + PNK.escapeHTML(p.imagen || 'img/prop1.png') + '" class="card-img-top" style="height: 200px; object-fit: cover;">';
+            html += '<div class="card-body p-4">';
+            html += '<h5 class="fw-bold mb-1">' + PNK.escapeHTML(p.titulo) + '</h5>';
+            html += '<p class="text-muted small">Estado: <span class="badge ' + statusBadge.class + '">' + statusBadge.text + '</span></p>';
+            html += '<p class="text-muted small"><i class="fas fa-map-marker-alt me-1"></i> ' + PNK.escapeHTML(p.direccion) + '</p>';
+            html += '<div class="d-flex justify-content-between mt-3">';
+            html += '<span class="fw-bold text-success">' + precio + '</span>';
+            html += '</div>';
+            html += '</div></div></div>';
+        });
+        grid.innerHTML = html;
+    });
+</script>
+</body>
+</html>

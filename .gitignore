@@ -1,0 +1,15 @@
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+
+# Deployment
+deploy-aws.md
+bucket-policy.json
+
+# Gemini
+.gemini/

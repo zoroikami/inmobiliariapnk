@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Recuperar acceso a tu cuenta de Inmobiliaria PNK.">
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <title>Inmobiliaria PNK - Recuperar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-light">
+
+<div class="container py-5">
+    <div class="row justify-content-center pt-5">
+        <div class="col-md-6 col-lg-4">
+            <div class="form-card bg-white p-5 rounded-4 shadow-sm">
+                <div class="text-center mb-4">
+                    <div class="bg-secondary text-white d-inline-flex p-3 rounded-circle mb-3">
+                        <i class="fas fa-unlock-alt fa-2x"></i>
+                    </div>
+                    <h2 class="fw-bold">Recuperar Acceso</h2>
+                    <p class="text-muted small">Te enviaremos un correo para restablecer tu clave.</p>
+                </div>
+
+                <form id="recuperarForm">
+                    <div class="mb-4">
+                        <label class="form-label small fw-bold">Correo Electrónico</label>
+                        <input type="email" class="form-control" name="email" placeholder="tu@correo.com" required>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-success btn-lg fw-bold rounded-pill">Enviar Instrucciones</button>
+                    </div>
+                    <div class="text-center mt-4">
+                        <a href="login.html" class="text-decoration-none text-muted small"><i class="fas fa-arrow-left me-2"></i> Volver al Login</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="js/utils.js"></script>
+<script src="js/notifications.js"></script>
+<script src="js/app.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

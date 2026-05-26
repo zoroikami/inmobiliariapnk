@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Registrar o editar propiedad - Inmobiliaria PNK.">
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <title>Inmobiliaria PNK - Nueva Propiedad</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Leaflet CSS para mini-mapa -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body class="bg-light">
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="form-card bg-white p-5 rounded-4 shadow-sm border-0">
+                <div class="d-flex justify-content-between align-items-center mb-5">
+                    <div>
+                        <h2 class="fw-bold mb-0" id="pageTitle">Registrar Nueva Propiedad</h2>
+                        <p class="text-muted" id="pageSubtitle">Completa la información para publicar en el catálogo.</p>
+                    </div>
+                    <a href="mantenedor_propiedades.html" class="btn btn-outline-secondary rounded-pill px-4">
+                        <i class="fas fa-times me-2"></i> Cancelar
+                    </a>
+                </div>
+
+                <form id="formPropiedad">
+                    <input type="hidden" id="propId" value="">
+
+                    <div class="row g-4">
+                        <!-- Información Básica -->
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Título de la Publicación</label>
+                                <input type="text" class="form-control" id="propTitulo" placeholder="Ej: Depto con Vista al Mar en La Serena" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Descripción</label>
+                                <textarea class="form-control" rows="4" id="propDescripcion" placeholder="Describe los detalles de la propiedad..."></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Imagen de Portada</label>
+                                <div class="border rounded-4 p-4 text-center bg-light" style="border-style: dashed !important;">
+                                    <i class="fas fa-cloud-upload-alt fa-3x text-muted mb-2"></i>
+                                    <p class="small text-muted mb-0">Arrastra una imagen o haz clic para subir</p>
+                                    <input type="file" class="form-control mt-2 shadow-none border-0 bg-transparent">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Detalles Técnicos -->
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold">Tipo de Propiedad</label>
+                            <select class="form-select" id="propTipo">
+                                <option>Departamento</option>
+                                <option>Casa</option>
+                                <option>Local Comercial</option>
+                                <option>Terreno / Sitio</option>
+                                <option>Oficina</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold">Tipo de Operación</label>
+                            <select class="form-select" id="propOperacion">
+                                <option>Venta</option>
+                                <option>Arriendo</option>
+                                <option>Arriendo Temporada</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label fw-bold">Precio (CLP)</label>
+                            <div class="input-group shadow-sm">
+                                <span class="input-group-text">$</span>
+                                <input type="number" class="form-control" id="propPrecioCLP" placeholder="150000000">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label fw-bold">Precio (UF)</label>
+                            <div class="input-group shadow-sm">
+                                <span class="input-group-text">UF</span>
+                                <input type="number" class="form-control" id="propPrecioUF" placeholder="4500">
+                            </div>
+                        </div>
+
+                        <!-- Ubicación -->
+                        <div class="col-md-12 mt-4">
+                            <h5 class="fw-bold border-bottom pb-2">Ubicación y Mapas</h5>
+                            <p class="text-muted small"><i class="fas fa-map-marked-alt me-2"></i>Haz clic en el mapa para seleccionar la ubicación de la propiedad.</p>
+                            <div class="bg-light p-2 rounded-4 mb-3 border">
+                                <div id="miniMap" style="height: 250px; border-radius: 12px; z-index: 1;"></div>
+                                <p class="text-center text-muted small mt-2 mb-0" id="coordLabel">Haz clic en el mapa para seleccionar ubicación</p>
+                            </div>
+                            <input type="hidden" id="propLat" value="">
+                            <input type="hidden" id="propLng" value="">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Dirección Exacta</label>
+                            <input type="text" class="form-control" id="propDireccion" placeholder="Calle, Número, Depto" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label fw-bold">Comuna</label>
+                            <select class="form-select" id="propComuna">
+                                <option>La Serena</option>
+                                <option>Coquimbo</option>
+                                <option>Vicuña</option>
+                                <option>Ovalle</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label fw-bold">Región</label>
+                            <input type="text" class="form-control" value="Coquimbo" readonly>
+                        </div>
+
+                        <!-- Características -->
+                        <div class="col-md-12 mt-4">
+                            <h5 class="fw-bold border-bottom pb-2">Características Detalladas</h5>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-bold text-muted">Dormitorios</label>
+                            <input type="number" class="form-control shadow-sm" id="propDormitorios" min="0" value="0">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-bold text-muted">Baños</label>
+                            <input type="number" class="form-control shadow-sm" id="propBanos" min="0" value="0">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-bold text-muted">Superficie Total (m²)</label>
+                            <input type="number" class="form-control shadow-sm" id="propSupTotal" min="0">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-bold text-muted">Superficie Construida (m²)</label>
+                            <input type="number" class="form-control shadow-sm" id="propSupConstruida" min="0">
+                        </div>
+
+                        <div class="col-12 mt-4">
+                            <label class="form-label d-block fw-bold mb-3"><i class="fas fa-plus-circle text-success me-2"></i> Extras y Comodidades</label>
+                            <div class="grid-checkboxes">
+                                <div class="form-check custom-check">
+                                    <input class="form-check-input" type="checkbox" id="checkBodega">
+                                    <label class="form-check-label" for="checkBodega">Bodega</label>
+                                </div>
+                                <div class="form-check custom-check">
+                                    <input class="form-check-input" type="checkbox" id="checkEstacionamiento">
+                                    <label class="form-check-label" for="checkEstacionamiento">Estacionamiento</label>
+                                </div>
+                                <div class="form-check custom-check">
+                                    <input class="form-check-input" type="checkbox" id="checkLogia">
+                                    <label class="form-check-label" for="checkLogia">Logia</label>
+                                </div>
+                                <div class="form-check custom-check">
+                                    <input class="form-check-input" type="checkbox" id="checkCocina">
+                                    <label class="form-check-label" for="checkCocina">Cocina Amoblada</label>
+                                </div>
+                                <div class="form-check custom-check">
+                                    <input class="form-check-input" type="checkbox" id="checkAntejardin">
+                                    <label class="form-check-label" for="checkAntejardin">Antejardín</label>
+                                </div>
+                                <div class="form-check custom-check">
+                                    <input class="form-check-input" type="checkbox" id="checkPatio">
+                                    <label class="form-check-label" for="checkPatio">Patio Trasero</label>
+                                </div>
+                                <div class="form-check custom-check">
+                                    <input class="form-check-input" type="checkbox" id="checkPiscina">
+                                    <label class="form-check-label" for="checkPiscina">Piscina</label>
+                                </div>
+                                <div class="form-check custom-check">
+                                    <input class="form-check-input" type="checkbox" id="checkSeguridad">
+                                    <label class="form-check-label" for="checkSeguridad">Seguridad 24/7</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 mt-5">
+                            <button type="submit" class="btn btn-success btn-lg px-5 rounded-pill fw-bold">
+                                <i class="fas fa-save me-2"></i> Guardar Propiedad
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="js/utils.js"></script>
+<script src="js/notifications.js"></script>
+<script src="js/app.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/crud-propiedades.js"></script>
+<script src="js/mapa.js"></script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Inmobiliaria PNK - Tu portal de propiedades de confianza.">
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <title>Inmobiliaria PNK - Inicio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white py-3 sticky-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <div class="bg-success text-white p-2 rounded-3 me-2"
+                    style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div>
+                    <span class="fw-bold text-success h4 mb-0">INMOBILIARIA</span>
+                    <span class="text-warning h5 mb-0">PNK</span>
+                </div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link fw-semibold px-3" href="index.html">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link fw-semibold px-3" href="mapa_interactivo.html">Mapa</a></li>
+                    <li class="nav-item"><a class="nav-link fw-semibold px-3" href="registro.html">Unirte</a></li>
+                    <li class="nav-item ms-lg-3">
+                        <a class="btn btn-success px-4 rounded-pill fw-bold" href="login.html">Iniciar Sesión</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Encuentra el hogar de tus sueños</h1>
+                <p>Descubre propiedades exclusivas en las
+                    mejores ubicaciones con la confianza de Inmobiliaria PNK.</p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="mapa_interactivo.html" class="btn btn-success btn-lg px-5 py-3 rounded-pill fw-bold">Ver
+                        Propiedades</a>
+                    <a href="registro.html" class="btn btn-outline-light btn-lg px-5 py-3 rounded-pill fw-bold">Publicar
+                        Propiedad</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="propiedades" class="py-5 bg-white">
+        <div class="container py-4">
+            <div class="text-center mb-5">
+                <h6 class="text-success fw-bold text-uppercase">Propiedades Destacadas</h6>
+                <h2 class="display-5 fw-bold">Ofertas Disponibles</h2>
+                <div class="bg-warning mx-auto" style="width: 80px; height: 5px; border-radius: 2px;"></div>
+            </div>
+
+            <div class="row g-4" id="propiedadesDestacadas">
+                <!-- Renderizado dinámicamente por JS -->
+            </div>
+
+            <div class="text-center mt-5">
+                <a href="mapa_interactivo.html" class="btn btn-outline-success btn-lg rounded-pill px-5 fw-bold">
+                    <i class="fas fa-map-marked-alt me-2"></i> Ver Todas en el Mapa
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-dark text-white py-5 mt-5">
+        <div class="container py-4 text-center">
+            <h4 class="fw-bold mb-4">INMOBILIARIA <span class="text-warning">PNK</span></h4>
+            <p class="text-muted small">&copy; 2026 Inmobiliaria PNK. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="js/utils.js"></script>
+<script src="js/notifications.js"></script>
+<script src="js/app.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var propiedades = PNK.getData(PNK.KEYS.PROPIEDADES);
+        var destacadas = propiedades.filter(function(p) {
+            return p.estado === 'publicado';
+        }).slice(0, 6);
+
+        var grid = document.getElementById('propiedadesDestacadas');
+        if (destacadas.length === 0) {
+            grid.innerHTML = '<div class="col-12 text-center py-4"><p class="text-muted">No hay propiedades disponibles en este momento.</p></div>';
+            return;
+        }
+
+        var html = '';
+        destacadas.forEach(function(p) {
+            var precio = p.precioUF ? PNK.formatUF(p.precioUF) : PNK.formatCLP(p.precioCLP);
+            if (p.operacion === 'Arriendo') precio += ' / mes';
+
+            html += '<div class="col-md-6 col-lg-4">';
+            html += '<div class="card h-100 border-0 shadow-sm overflow-hidden" style="border-radius: 20px;">';
+            html += '<img src="' + PNK.escapeHTML(p.imagen || 'img/prop1.png') + '" class="card-img-top" alt="' + PNK.escapeHTML(p.titulo) + '" style="height: 250px; object-fit: cover;">';
+            html += '<div class="card-body p-4">';
+            html += '<div class="d-flex justify-content-between mb-2">';
+            html += '<h5 class="card-title fw-bold">' + PNK.escapeHTML(p.titulo) + '</h5>';
+            html += '<span class="text-success fw-bold">' + precio + '</span>';
+            html += '</div>';
+            html += '<p class="text-muted small"><i class="fas fa-map-marker-alt me-2"></i>' + PNK.escapeHTML(p.direccion) + '</p>';
+            html += '<div class="d-flex gap-3 mb-3 text-muted small">';
+            if (p.dormitorios) html += '<span><i class="fas fa-bed me-1"></i>' + p.dormitorios + ' Hab</span>';
+            if (p.banos) html += '<span><i class="fas fa-bath me-1"></i>' + p.banos + ' Baños</span>';
+            if (p.superficieTotal) html += '<span><i class="fas fa-ruler-combined me-1"></i>' + p.superficieTotal + ' m²</span>';
+            html += '</div>';
+            html += '<a href="login.html" class="btn btn-outline-success w-100 rounded-pill fw-bold">Ver detalles</a>';
+            html += '</div></div></div>';
+        });
+        grid.innerHTML = html;
+    });
+</script>
+</body>
+
+</html>
