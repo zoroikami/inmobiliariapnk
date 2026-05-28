@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,27 +8,34 @@
     <link rel="icon" type="image/png" href="img/favicon.png">
     <title>Inmobiliaria PNK - Registro</title>
     <!-- Font Import: Inter (Matches Dashboard and Login exactly) -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Bootstrap -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <!-- Animate.css for smooth loading -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-    
+
     <style>
         :root {
             --font-main: 'Inter', system-ui, -apple-system, sans-serif;
-            --color-primary: #198754; /* Success Green from index.html (Bootstrap) */
-            --color-primary-dark: #157347; /* Success Hover Green (Bootstrap) */
+            --color-primary: #198754;
+            /* Success Green from index.html (Bootstrap) */
+            --color-primary-dark: #157347;
+            /* Success Hover Green (Bootstrap) */
             --color-primary-light: rgba(25, 135, 84, 0.08);
             --color-primary-glow: rgba(25, 135, 84, 0.15);
-            --color-gold: #ffc107; /* Warning Yellow/Gold from index.html (Bootstrap) */
-            --color-text-title: #1f2937; /* Dashboard Text Slate Gray */
+            --color-gold: #ffc107;
+            /* Warning Yellow/Gold from index.html (Bootstrap) */
+            --color-text-title: #1f2937;
+            /* Dashboard Text Slate Gray */
             --color-text-body: #1f2937;
-            --color-text-muted: #6b7280; /* Dashboard Text Muted Gray */
+            --color-text-muted: #6b7280;
+            /* Dashboard Text Muted Gray */
             --color-border: #cbd5e1;
-            --color-bg-light: #f9fafb; /* Dashboard Background Light */
+            --color-bg-light: #f9fafb;
+            /* Dashboard Background Light */
         }
 
         body {
@@ -330,298 +338,319 @@
         }
     </style>
 </head>
+
 <body>
 
-<div class="split-container">
-    
-    <!-- Left Column: Form Side -->
-    <div class="form-side">
-        <div class="form-wrapper animate__animated animate__fadeIn">
-            
-            <!-- Brand Logo -->
-            <a href="index.html" class="brand-logo-container">
-                <div class="brand-icon">
-                    <i class="fas fa-home"></i>
+    <div class="split-container">
+
+        <!-- Left Column: Form Side -->
+        <div class="form-side">
+            <div class="form-wrapper animate__animated animate__fadeIn">
+
+                <!-- Brand Logo -->
+                <a href="index.html" class="brand-logo-container">
+                    <div class="brand-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <h1 class="brand-text">INMOBILIARIA <span>PNK</span></h1>
+                </a>
+
+                <!-- Heading -->
+                <h2 class="form-title">Únete a nosotros</h2>
+                <p class="form-subtitle">Selecciona tu rol para comenzar el registro.</p>
+
+                <!-- Tabs Radio Inputs -->
+                <input type="radio" name="role" id="tab1" class="d-none" checked>
+                <input type="radio" name="role" id="tab2" class="d-none">
+                <input type="radio" name="role" id="tab3" class="d-none">
+
+                <!-- Elegant Role Buttons -->
+                <div class="tabs d-flex gap-2 mb-4">
+                    <label for="tab1" class="tab-btn btn-propietario">PROPIETARIO</label>
+                    <label for="tab2" class="tab-btn btn-gestor">GESTOR FREE</label>
+                    <label for="tab3" class="tab-btn btn-cliente">USUARIO</label>
                 </div>
-                <h1 class="brand-text">INMOBILIARIA <span>PNK</span></h1>
-            </a>
 
-            <!-- Heading -->
-            <h2 class="form-title">Únete a nosotros</h2>
-            <p class="form-subtitle">Selecciona tu rol para comenzar el registro.</p>
+                <!-- Form Propietario -->
+                <div class="tab-content content-propietario">
+                    <form id="formPropietario">
+                        <div class="row g-2 mb-2">
+                            <div class="col-md-6">
+                                <label class="form-label">Nombre Completo</label>
+                                <div class="input-group-custom">
+                                    <span class="input-icon"><i class="fas fa-user"></i></span>
+                                    <input type="text" class="form-control-custom" name="nombre"
+                                        placeholder="Juan Pérez" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">RUT</label>
+                                <div class="input-group-custom">
+                                    <span class="input-icon"><i class="fas fa-id-card"></i></span>
+                                    <input type="text" class="form-control-custom" name="rut" placeholder="12.345.678-9"
+                                        required>
+                                </div>
+                            </div>
+                        </div>
 
-            <!-- Tabs Radio Inputs -->
-            <input type="radio" name="role" id="tab1" class="d-none" checked>
-            <input type="radio" name="role" id="tab2" class="d-none">
-            <input type="radio" name="role" id="tab3" class="d-none">
+                        <div class="row g-2 mb-2">
+                            <div class="col-md-6">
+                                <label class="form-label">Fecha de Nacimiento</label>
+                                <div class="input-group-custom">
+                                    <span class="input-icon"><i class="fas fa-calendar-alt"></i></span>
+                                    <input type="date" class="form-control-custom" name="fechaNacimiento" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Sexo</label>
+                                <div class="input-group-custom">
+                                    <span class="input-icon"><i class="fas fa-venus-mars"></i></span>
+                                    <select class="form-select-custom" name="sexo" required>
+                                        <option value="" selected disabled>Seleccionar...</option>
+                                        <option value="M">Masculino</option>
+                                        <option value="F">Femenino</option>
+                                        <option value="O">Otro</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
 
-            <!-- Elegant Role Buttons -->
-            <div class="tabs d-flex gap-2 mb-4">
-                <label for="tab1" class="tab-btn btn-propietario">PROPIETARIO</label>
-                <label for="tab2" class="tab-btn btn-gestor">GESTOR FREE</label>
-                <label for="tab3" class="tab-btn btn-cliente">USUARIO NORMAL</label>
+                        <div class="row g-2 mb-2">
+                            <div class="col-md-6">
+                                <label class="form-label">Correo Electrónico</label>
+                                <div class="input-group-custom">
+                                    <span class="input-icon"><i class="fas fa-envelope"></i></span>
+                                    <input type="email" class="form-control-custom" name="email"
+                                        placeholder="propietario@ejemplo.com" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Teléfono Móvil</label>
+                                <div class="input-group-custom">
+                                    <span class="input-icon"><i class="fas fa-phone"></i></span>
+                                    <input type="tel" class="form-control-custom" name="telefono"
+                                        placeholder="+56 9 1234 5678" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group-custom mb-2">
+                            <label class="form-label">N° de Propiedad (Bienes Raíces)</label>
+                            <div class="input-group-custom">
+                                <span class="input-icon"><i class="fas fa-building"></i></span>
+                                <input type="text" class="form-control-custom" name="nPropiedad"
+                                    placeholder="Ej: 1234-56" required>
+                            </div>
+                            <small class="text-muted" style="font-size: 0.65rem;">Dato obligatorio para validación de
+                                titularidad.</small>
+                        </div>
+
+                        <div class="form-group-custom mb-4">
+                            <label class="form-label">Contraseña</label>
+                            <div class="input-group-custom">
+                                <span class="input-icon"><i class="fas fa-lock"></i></span>
+                                <input type="password" class="form-control-custom" name="password"
+                                    placeholder="••••••••" required>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-submit w-100">
+                            <i class="fas fa-user-plus me-1"></i> Crear Cuenta de Propietario
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Form Gestor -->
+                <div class="tab-content content-gestor">
+                    <form id="formGestor">
+                        <div class="row g-2 mb-2">
+                            <div class="col-md-6">
+                                <label class="form-label">Nombre Completo</label>
+                                <div class="input-group-custom">
+                                    <span class="input-icon"><i class="fas fa-user"></i></span>
+                                    <input type="text" class="form-control-custom" name="nombre" placeholder="Ana Silva"
+                                        required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">RUT</label>
+                                <div class="input-group-custom">
+                                    <span class="input-icon"><i class="fas fa-id-card"></i></span>
+                                    <input type="text" class="form-control-custom" name="rut" placeholder="12.345.678-9"
+                                        required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row g-2 mb-2">
+                            <div class="col-md-6">
+                                <label class="form-label">Fecha de Nacimiento</label>
+                                <div class="input-group-custom">
+                                    <span class="input-icon"><i class="fas fa-calendar-alt"></i></span>
+                                    <input type="date" class="form-control-custom" name="fechaNacimiento" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Sexo</label>
+                                <div class="input-group-custom">
+                                    <span class="input-icon"><i class="fas fa-venus-mars"></i></span>
+                                    <select class="form-select-custom" name="sexo" required>
+                                        <option value="" selected disabled>Seleccionar...</option>
+                                        <option value="M">Masculino</option>
+                                        <option value="F">Femenino</option>
+                                        <option value="O">Otro</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row g-2 mb-2">
+                            <div class="col-md-6">
+                                <label class="form-label">Email Corporativo</label>
+                                <div class="input-group-custom">
+                                    <span class="input-icon"><i class="fas fa-envelope"></i></span>
+                                    <input type="email" class="form-control-custom" name="email"
+                                        placeholder="gestor@agencia.com" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Teléfono Móvil</label>
+                                <div class="input-group-custom">
+                                    <span class="input-icon"><i class="fas fa-phone"></i></span>
+                                    <input type="tel" class="form-control-custom" name="telefono"
+                                        placeholder="+56 9 2345 6789" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group-custom mb-2">
+                            <label class="form-label">Certificado de Antecedentes (PDF)</label>
+                            <div class="input-group-custom">
+                                <span class="input-icon"><i class="fas fa-file-pdf"></i></span>
+                                <input type="file" class="form-file-custom" accept=".pdf">
+                            </div>
+                            <small class="text-muted" style="font-size: 0.65rem;">Requerido para validación de cuenta
+                                PENKA.</small>
+                        </div>
+
+                        <div class="form-group-custom mb-4">
+                            <label class="form-label">Contraseña</label>
+                            <div class="input-group-custom">
+                                <span class="input-icon"><i class="fas fa-lock"></i></span>
+                                <input type="password" class="form-control-custom" name="password"
+                                    placeholder="••••••••" required>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-submit w-100">
+                            <i class="fas fa-user-plus me-1"></i> Solicitar Registro de Gestor Free
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Form Cliente -->
+                <div class="tab-content content-cliente">
+                    <form id="formCliente">
+                        <div class="row g-2 mb-2">
+                            <div class="col-md-6">
+                                <label class="form-label">Nombre Completo</label>
+                                <div class="input-group-custom">
+                                    <span class="input-icon"><i class="fas fa-user"></i></span>
+                                    <input type="text" class="form-control-custom" name="nombre"
+                                        placeholder="Juan Pérez" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">RUT</label>
+                                <div class="input-group-custom">
+                                    <span class="input-icon"><i class="fas fa-id-card"></i></span>
+                                    <input type="text" class="form-control-custom" name="rut" placeholder="12.345.678-9"
+                                        required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row g-2 mb-2">
+                            <div class="col-md-6">
+                                <label class="form-label">Fecha de Nacimiento</label>
+                                <div class="input-group-custom">
+                                    <span class="input-icon"><i class="fas fa-calendar-alt"></i></span>
+                                    <input type="date" class="form-control-custom" name="fechaNacimiento" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Sexo</label>
+                                <div class="input-group-custom">
+                                    <span class="input-icon"><i class="fas fa-venus-mars"></i></span>
+                                    <select class="form-select-custom" name="sexo" required>
+                                        <option value="" selected disabled>Seleccionar...</option>
+                                        <option value="M">Masculino</option>
+                                        <option value="F">Femenino</option>
+                                        <option value="O">Otro</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row g-2 mb-2">
+                            <div class="col-md-6">
+                                <label class="form-label">Correo Electrónico</label>
+                                <div class="input-group-custom">
+                                    <span class="input-icon"><i class="fas fa-envelope"></i></span>
+                                    <input type="email" class="form-control-custom" name="email"
+                                        placeholder="usuario@ejemplo.com" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Teléfono Móvil</label>
+                                <div class="input-group-custom">
+                                    <span class="input-icon"><i class="fas fa-phone"></i></span>
+                                    <input type="tel" class="form-control-custom" name="telefono"
+                                        placeholder="+56 9 1234 5678" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group-custom mb-4">
+                            <label class="form-label">Contraseña</label>
+                            <div class="input-group-custom">
+                                <span class="input-icon"><i class="fas fa-lock"></i></span>
+                                <input type="password" class="form-control-custom" name="password"
+                                    placeholder="••••••••" required>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-submit w-100">
+                            <i class="fas fa-user-plus me-1"></i> Crear Cuenta de Usuario
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Footer Redirect -->
+                <div class="register-footer">
+                    ¿Ya tienes una cuenta? <a href="login.html" class="register-link">Inicia Sesión</a>
+                </div>
+
             </div>
-
-            <!-- Form Propietario -->
-            <div class="tab-content content-propietario">
-                <form id="formPropietario">
-                    <div class="row g-2 mb-2">
-                        <div class="col-md-6">
-                            <label class="form-label">Nombre Completo</label>
-                            <div class="input-group-custom">
-                                <span class="input-icon"><i class="fas fa-user"></i></span>
-                                <input type="text" class="form-control-custom" name="nombre" placeholder="Juan Pérez" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">RUT</label>
-                            <div class="input-group-custom">
-                                <span class="input-icon"><i class="fas fa-id-card"></i></span>
-                                <input type="text" class="form-control-custom" name="rut" placeholder="12.345.678-9" required>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row g-2 mb-2">
-                        <div class="col-md-6">
-                            <label class="form-label">Fecha de Nacimiento</label>
-                            <div class="input-group-custom">
-                                <span class="input-icon"><i class="fas fa-calendar-alt"></i></span>
-                                <input type="date" class="form-control-custom" name="fechaNacimiento" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Sexo</label>
-                            <div class="input-group-custom">
-                                <span class="input-icon"><i class="fas fa-venus-mars"></i></span>
-                                <select class="form-select-custom" name="sexo" required>
-                                    <option value="" selected disabled>Seleccionar...</option>
-                                    <option value="M">Masculino</option>
-                                    <option value="F">Femenino</option>
-                                    <option value="O">Otro</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row g-2 mb-2">
-                        <div class="col-md-6">
-                            <label class="form-label">Correo Electrónico</label>
-                            <div class="input-group-custom">
-                                <span class="input-icon"><i class="fas fa-envelope"></i></span>
-                                <input type="email" class="form-control-custom" name="email" placeholder="propietario@ejemplo.com" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Teléfono Móvil</label>
-                            <div class="input-group-custom">
-                                <span class="input-icon"><i class="fas fa-phone"></i></span>
-                                <input type="tel" class="form-control-custom" name="telefono" placeholder="+56 9 1234 5678" required>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group-custom mb-2">
-                        <label class="form-label">N° de Propiedad (Bienes Raíces)</label>
-                        <div class="input-group-custom">
-                            <span class="input-icon"><i class="fas fa-building"></i></span>
-                            <input type="text" class="form-control-custom" name="nPropiedad" placeholder="Ej: 1234-56" required>
-                        </div>
-                        <small class="text-muted" style="font-size: 0.65rem;">Dato obligatorio para validación de titularidad.</small>
-                    </div>
-
-                    <div class="form-group-custom mb-4">
-                        <label class="form-label">Contraseña</label>
-                        <div class="input-group-custom">
-                            <span class="input-icon"><i class="fas fa-lock"></i></span>
-                            <input type="password" class="form-control-custom" name="password" placeholder="••••••••" required>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn btn-submit w-100">
-                        <i class="fas fa-user-plus me-1"></i> Crear Cuenta de Propietario
-                    </button>
-                </form>
-            </div>
-
-            <!-- Form Gestor -->
-            <div class="tab-content content-gestor">
-                <form id="formGestor">
-                    <div class="row g-2 mb-2">
-                        <div class="col-md-6">
-                            <label class="form-label">Nombre Completo</label>
-                            <div class="input-group-custom">
-                                <span class="input-icon"><i class="fas fa-user"></i></span>
-                                <input type="text" class="form-control-custom" name="nombre" placeholder="Ana Silva" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">RUT</label>
-                            <div class="input-group-custom">
-                                <span class="input-icon"><i class="fas fa-id-card"></i></span>
-                                <input type="text" class="form-control-custom" name="rut" placeholder="12.345.678-9" required>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row g-2 mb-2">
-                        <div class="col-md-6">
-                            <label class="form-label">Fecha de Nacimiento</label>
-                            <div class="input-group-custom">
-                                <span class="input-icon"><i class="fas fa-calendar-alt"></i></span>
-                                <input type="date" class="form-control-custom" name="fechaNacimiento" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Sexo</label>
-                            <div class="input-group-custom">
-                                <span class="input-icon"><i class="fas fa-venus-mars"></i></span>
-                                <select class="form-select-custom" name="sexo" required>
-                                    <option value="" selected disabled>Seleccionar...</option>
-                                    <option value="M">Masculino</option>
-                                    <option value="F">Femenino</option>
-                                    <option value="O">Otro</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row g-2 mb-2">
-                        <div class="col-md-6">
-                            <label class="form-label">Email Corporativo</label>
-                            <div class="input-group-custom">
-                                <span class="input-icon"><i class="fas fa-envelope"></i></span>
-                                <input type="email" class="form-control-custom" name="email" placeholder="gestor@agencia.com" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Teléfono Móvil</label>
-                            <div class="input-group-custom">
-                                <span class="input-icon"><i class="fas fa-phone"></i></span>
-                                <input type="tel" class="form-control-custom" name="telefono" placeholder="+56 9 2345 6789" required>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group-custom mb-2">
-                        <label class="form-label">Certificado de Antecedentes (PDF)</label>
-                        <div class="input-group-custom">
-                            <span class="input-icon"><i class="fas fa-file-pdf"></i></span>
-                            <input type="file" class="form-file-custom" accept=".pdf">
-                        </div>
-                        <small class="text-muted" style="font-size: 0.65rem;">Requerido para validación de cuenta PENKA.</small>
-                    </div>
-
-                    <div class="form-group-custom mb-4">
-                        <label class="form-label">Contraseña</label>
-                        <div class="input-group-custom">
-                            <span class="input-icon"><i class="fas fa-lock"></i></span>
-                            <input type="password" class="form-control-custom" name="password" placeholder="••••••••" required>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn btn-submit w-100">
-                        <i class="fas fa-user-plus me-1"></i> Solicitar Registro de Gestor Free
-                    </button>
-                </form>
-            </div>
-
-            <!-- Form Cliente -->
-            <div class="tab-content content-cliente">
-                <form id="formCliente">
-                    <div class="row g-2 mb-2">
-                        <div class="col-md-6">
-                            <label class="form-label">Nombre Completo</label>
-                            <div class="input-group-custom">
-                                <span class="input-icon"><i class="fas fa-user"></i></span>
-                                <input type="text" class="form-control-custom" name="nombre" placeholder="Juan Pérez" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">RUT</label>
-                            <div class="input-group-custom">
-                                <span class="input-icon"><i class="fas fa-id-card"></i></span>
-                                <input type="text" class="form-control-custom" name="rut" placeholder="12.345.678-9" required>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row g-2 mb-2">
-                        <div class="col-md-6">
-                            <label class="form-label">Fecha de Nacimiento</label>
-                            <div class="input-group-custom">
-                                <span class="input-icon"><i class="fas fa-calendar-alt"></i></span>
-                                <input type="date" class="form-control-custom" name="fechaNacimiento" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Sexo</label>
-                            <div class="input-group-custom">
-                                <span class="input-icon"><i class="fas fa-venus-mars"></i></span>
-                                <select class="form-select-custom" name="sexo" required>
-                                    <option value="" selected disabled>Seleccionar...</option>
-                                    <option value="M">Masculino</option>
-                                    <option value="F">Femenino</option>
-                                    <option value="O">Otro</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row g-2 mb-2">
-                        <div class="col-md-6">
-                            <label class="form-label">Correo Electrónico</label>
-                            <div class="input-group-custom">
-                                <span class="input-icon"><i class="fas fa-envelope"></i></span>
-                                <input type="email" class="form-control-custom" name="email" placeholder="usuario@ejemplo.com" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Teléfono Móvil</label>
-                            <div class="input-group-custom">
-                                <span class="input-icon"><i class="fas fa-phone"></i></span>
-                                <input type="tel" class="form-control-custom" name="telefono" placeholder="+56 9 1234 5678" required>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group-custom mb-4">
-                        <label class="form-label">Contraseña</label>
-                        <div class="input-group-custom">
-                            <span class="input-icon"><i class="fas fa-lock"></i></span>
-                            <input type="password" class="form-control-custom" name="password" placeholder="••••••••" required>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn btn-submit w-100">
-                        <i class="fas fa-user-plus me-1"></i> Crear Cuenta de Usuario
-                    </button>
-                </form>
-            </div>
-
-            <!-- Footer Redirect -->
-            <div class="register-footer">
-                ¿Ya tienes una cuenta? <a href="login.html" class="register-link">Inicia Sesión</a>
-            </div>
-
         </div>
+
+        <!-- Right Column: Visual Side -->
+        <div class="visual-side">
+            <div class="visual-info-card animate__animated animate__fadeInUp">
+                <h3>Comienza tu viaje hoy</h3>
+                <p>Únete a nuestra plataforma inmobiliaria premium. Regístrate en segundos para publicar propiedades,
+                    gestionar tus visitas de forma relacional, o chatear en tiempo real.</p>
+            </div>
+        </div>
+
     </div>
 
-    <!-- Right Column: Visual Side -->
-    <div class="visual-side">
-        <div class="visual-info-card animate__animated animate__fadeInUp">
-            <h3>Comienza tu viaje hoy</h3>
-            <p>Únete a nuestra plataforma inmobiliaria premium. Regístrate en segundos para publicar propiedades, gestionar tus visitas de forma relacional, o chatear en tiempo real.</p>
-        </div>
-    </div>
-
-</div>
-
-<!-- Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="js/utils.js"></script>
-<script src="js/notifications.js"></script>
-<script src="js/app.js"></script>
-<script src="js/auth.js"></script>
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/auth.js"></script>
 </body>
+
 </html>

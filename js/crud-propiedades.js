@@ -72,10 +72,10 @@
                 html += '</tr>';
             });
 
-            tbody.innerHTML = html;
+            PNK.setSafeHTML(tbody, html);
             updatePropCount(propiedades.length);
         } catch (error) {
-            tbody.innerHTML = '<tr><td colspan="7" class="text-center text-danger py-5"><i class="fas fa-exclamation-triangle fa-2x mb-3 d-block"></i>Error al conectar con la API de propiedades</td></tr>';
+            PNK.setSafeHTML(tbody, '<tr><td colspan="7" class="text-center text-danger py-5"><i class="fas fa-exclamation-triangle fa-2x mb-3 d-block"></i>Error al conectar con la API de propiedades</td></tr>');
             updatePropCount(0);
         }
     }

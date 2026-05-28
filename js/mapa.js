@@ -213,7 +213,7 @@
             });
         }
 
-        detailPanel.innerHTML = `
+        PNK.setSafeHTML(detailPanel, `
             <button class="btn-back-detail" onclick="PNK.showPropertyList()">
                 <i class="fas fa-arrow-left"></i> Volver a la lista
             </button>
@@ -234,7 +234,7 @@
             <a href="#" class="btn-buy" onclick="PNK.toast.info('Función de contacto en desarrollo.');return false;">
                 <i class="fas fa-envelope me-2"></i>Contactar Agente
             </a>
-        `;
+        `);
     }
 
     // ── Renderizar lista de propiedades en panel ──────────────
@@ -277,7 +277,7 @@
             html += '</div></div>';
         });
 
-        listPanel.innerHTML = html;
+        PNK.setSafeHTML(listPanel, html);
     }
 
     // ── Mostrar lista (volver del detalle) ────────────────────

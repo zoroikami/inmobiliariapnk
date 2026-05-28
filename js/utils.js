@@ -233,6 +233,17 @@ PNK.escapeAttr = function (str) {
         .replace(/\//g, '&#x2F;');
 };
 
+// ── Renderizar HTML de forma segura (Previene XSS) ─────────────
+PNK.setSafeHTML = function (element, htmlString) {
+    if (!element) return;
+    element.innerHTML = ''; // Limpiar usando constante segura
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(htmlString, 'text/html');
+    while (doc.body.firstChild) {
+        element.appendChild(doc.body.firstChild);
+    }
+};
+
 // ── Truncar texto ─────────────────────────────────────────────
 PNK.truncate = function (str, maxLen) {
     if (!str) return '';
