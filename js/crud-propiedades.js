@@ -57,6 +57,7 @@
                 html += '<td class="text-success fw-bold">' + precio + '</td>';
                 html += '<td><span class="badge ' + statusBadge.class + '">' + statusBadge.text + '</span></td>';
                 html += '<td>';
+                html += '<a href="detalle_propiedad.html?id=' + p.id + '" class="btn btn-sm btn-outline-primary me-1" title="Ver Ficha" target="_blank"><i class="fas fa-eye"></i></a>';
                 html += '<a href="nueva_propiedad.html?id=' + p.id + '" class="btn btn-sm btn-outline-secondary me-1" title="Editar"><i class="fas fa-edit"></i></a>';
                 html += '<div class="btn-group me-1"><button class="btn btn-sm btn-outline-info dropdown-toggle" data-bs-toggle="dropdown" title="Cambiar Estado"><i class="fas fa-exchange-alt"></i></button>';
                 html += '<ul class="dropdown-menu">';

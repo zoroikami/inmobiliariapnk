@@ -1,97 +1,785 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Iniciar sesión en Inmobiliaria PNK - Portal de propiedades de confianza.">
     <link rel="icon" type="image/png" href="img/favicon.png">
-    <title>Inmobiliaria PNK - Login</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <title>Inmobiliaria PNK - Iniciar Sesión</title>
+    <!-- Font Import: Inter (Matches Dashboard and Login exactly) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Bootstrap -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/dark-mode.css">
-    <script src="js/dark-mode.js"></script>
+    <!-- Animate.css for smooth load transitions -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+    <style>
+        :root {
+            --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+            --color-primary: #198754;
+            /* Success Green from index.html (Bootstrap) */
+            --color-primary-dark: #157347;
+            /* Success Hover Green (Bootstrap) */
+            --color-primary-light: rgba(25, 135, 84, 0.08);
+            --color-primary-glow: rgba(25, 135, 84, 0.15);
+            --color-gold: #ffc107;
+            /* Warning Yellow/Gold from index.html (Bootstrap) */
+            --color-text-title: #1f2937;
+            /* Dashboard Text Slate Gray */
+            --color-text-body: #1f2937;
+            --color-text-muted: #6b7280;
+            /* Dashboard Text Muted Gray */
+            --color-border: #cbd5e1;
+            --color-bg-light: #f9fafb;
+            /* Dashboard Background Light */
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: #ffffff;
+            color: var(--color-text-body);
+            min-height: 100vh;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* ── Split Layout Container ─────────────────────────── */
+        .split-container {
+            display: flex;
+            min-height: 100vh;
+            width: 100vw;
+        }
+
+        /* ── Left Column: Login Form Side (40% Width) ──────── */
+        .form-side {
+            width: 40%;
+            min-width: 420px;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 50px 60px;
+            position: relative;
+            z-index: 10;
+            box-shadow: 10px 0 30px rgba(0, 0, 0, 0.02);
+            transition: all 0.3s ease;
+        }
+
+        .form-wrapper {
+            max-width: 380px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* Brand Headings */
+        .brand-logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 30px;
+            text-decoration: none;
+        }
+
+        .brand-icon {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+            border-radius: 10px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            box-shadow: 0 4px 10px var(--color-primary-glow);
+        }
+
+        .brand-text {
+            font-family: var(--font-main);
+            font-weight: 800;
+            font-size: 1.4rem;
+            letter-spacing: -0.5px;
+            color: var(--color-primary);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .brand-text span {
+            color: var(--color-gold);
+            font-weight: 900;
+        }
+
+        .form-title {
+            font-family: var(--font-main);
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--color-text-title);
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .form-subtitle {
+            font-size: 0.88rem;
+            color: var(--color-text-muted);
+            margin-bottom: 30px;
+        }
+
+        /* ── Input Styling ─────────────────────────────────── */
+        .form-group-custom {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--color-text-muted);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .input-group-custom {
+            display: flex;
+            align-items: center;
+            background-color: var(--color-bg-light);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+        }
+
+        .input-group-custom:focus-within {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px var(--color-primary-glow);
+            background-color: #ffffff;
+        }
+
+        .input-icon {
+            padding: 14px 12px 14px 18px;
+            color: var(--color-text-muted);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .input-group-custom:focus-within .input-icon {
+            color: var(--color-primary);
+        }
+
+        .form-control-custom {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            padding: 14px 16px 14px 0;
+            font-size: 0.92rem;
+            color: var(--color-text-title);
+            font-family: inherit;
+        }
+
+        .form-control-custom::placeholder {
+            color: #94a3b8;
+            /* Slate 400 */
+        }
+
+        /* Toggle Password button */
+        .btn-toggle-pwd {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--color-text-muted);
+            padding: 0 18px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .btn-toggle-pwd:hover {
+            color: var(--color-text-title);
+        }
+
+        /* Utilities row */
+        .form-check-input {
+            cursor: pointer;
+            border-color: #cbd5e1;
+        }
+
+        .form-check-input:checked {
+            background-color: var(--color-primary);
+            border-color: var(--color-primary);
+        }
+
+        .forgot-link {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--color-primary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .forgot-link:hover {
+            color: var(--color-primary-dark);
+            text-decoration: underline;
+        }
+
+        /* Submit Button */
+        .btn-submit {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+            border: none;
+            color: #ffffff;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 14px;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px var(--color-primary-glow);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-submit:active {
+            transform: translateY(1px);
+        }
+
+        /* ── Acceso Demo Drawer ────────────────────────────── */
+        .demo-section {
+            margin-top: 25px;
+            border-top: 1px solid var(--color-border);
+            padding-top: 20px;
+        }
+
+        .demo-title-btn {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--color-text-muted);
+            font-size: 0.8rem;
+            font-weight: 600;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .demo-title-btn:hover {
+            color: var(--color-text-title);
+        }
+
+        .demo-box {
+            display: none;
+            background-color: var(--color-bg-light);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 10px;
+            margin-top: 10px;
+            animation: fadeIn 0.25s forwards;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+        }
+
+        .demo-btn {
+            background-color: #ffffff;
+            border: 1px solid var(--color-border);
+            color: var(--color-text-title);
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .demo-btn:hover {
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+            background-color: var(--color-primary-light);
+            transform: translateY(-1px);
+        }
+
+        .demo-btn small {
+            display: block;
+            font-size: 0.62rem;
+            color: var(--color-text-muted);
+            font-weight: 400;
+            margin-top: 1px;
+        }
+
+        /* Register link */
+        .register-footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+        }
+
+        .register-link {
+            color: var(--color-primary);
+            font-weight: 700;
+            text-decoration: none;
+            transition: color 0.2s;
+            margin-left: 4px;
+        }
+
+        .register-link:hover {
+            color: var(--color-primary-dark);
+            text-decoration: underline;
+        }
+
+        /* ── Right Column: Visual Side (60% Width) ────────── */
+        .visual-side {
+            width: 60%;
+            background: linear-gradient(135deg, rgba(31, 41, 55, 0.4) 0%, rgba(31, 41, 55, 0.8) 100%), url('img/hero.png');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 80px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .visual-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            width: 100%;
+        }
+
+        .visual-header {
+            margin-bottom: 20px;
+            animation: fadeInDown 0.6s ease-out;
+        }
+
+        .visual-tag {
+            background-color: var(--color-primary-dark);
+            color: #ffffff;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 10px rgba(5, 150, 105, 0.3);
+        }
+
+        .visual-title {
+            font-family: var(--font-main);
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+        }
+
+        .visual-subtitle {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.75);
+            line-height: 1.5;
+            margin-bottom: 0;
+        }
+
+        .visual-listings-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 16px;
+            margin: 20px 0;
+            max-height: calc(100vh - 220px);
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        /* Custom Scrollbar for pilot list */
+        .visual-listings-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .visual-listings-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .visual-listings-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+
+        .visual-listings-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .mini-prop-card {
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            display: flex;
+            gap: 16px;
+            padding: 14px;
+            text-decoration: none !important;
+            color: #ffffff !important;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .mini-prop-card:hover {
+            transform: translateX(8px);
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(16, 185, 129, 0.4);
+            box-shadow: 0 15px 30px rgba(16, 185, 129, 0.15), 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .mini-prop-img {
+            width: 100px;
+            height: 75px;
+            object-fit: cover;
+            border-radius: 10px;
+            flex-shrink: 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .mini-prop-body {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .mini-prop-title {
+            font-size: 0.92rem;
+            font-weight: 700;
+            margin: 0 0 3px 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .mini-prop-price {
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: var(--color-primary);
+            /* Green Accent */
+            margin-bottom: 2px;
+        }
+
+        .mini-prop-meta {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.65);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .mini-prop-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Default fallback info card if no dynamic data */
+        .visual-info-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .visual-info-card h3 {
+            font-family: var(--font-main);
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        .visual-info-card p {
+            font-size: 0.94rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            margin-bottom: 0;
+        }
+
+        .visual-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.78rem;
+            margin-top: 10px;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        /* ── Responsive Behavior ────────────────────────────── */
+        @media (max-width: 991px) {
+            .visual-side {
+                display: none;
+            }
+
+            .form-side {
+                width: 100%;
+                min-width: 100%;
+                padding: 40px 24px;
+            }
+
+            .form-wrapper {
+                max-width: 400px;
+            }
+        }
+    </style>
 </head>
-<body class="bg-light">
 
-<div class="container-fluid p-0 overflow-hidden" style="height: 100vh;">
-    <div class="row g-0 h-100">
-        <div class="col-lg-4 d-flex align-items-center justify-content-center bg-white p-5">
-            <div class="w-100" style="max-width: 400px;">
-                <div class="text-center mb-5">
-                    <a href="index.html" class="text-decoration-none">
-                        <div class="bg-success text-white p-3 rounded-circle d-inline-flex mb-3">
-                            <i class="fas fa-home fa-2x"></i>
-                        </div>
-                        <h2 class="fw-bold text-success mb-0">INMOBILIARIA</h2>
-                        <h4 class="text-warning fw-bold mb-0">PNK</h4>
-                    </a>
-                    <p class="text-muted mt-3">Ingresa tus credenciales para continuar.</p>
-                </div>
+<body>
 
+    <div class="split-container">
+
+        <!-- Left Column: Form Side -->
+        <div class="form-side">
+            <div class="form-wrapper animate__animated animate__fadeIn">
+
+                <!-- Brand Logo -->
+                <a href="index.html" class="brand-logo-container">
+                    <div class="brand-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <h1 class="brand-text">INMOBILIARIA <span>PNK</span></h1>
+                </a>
+
+                <!-- Heading -->
+                <h2 class="form-title">¡Bienvenido de nuevo!</h2>
+                <p class="form-subtitle">Ingresa tus credenciales autorizadas para acceder al portal.</p>
+
+                <!-- Login Form -->
                 <form id="loginForm">
-                    <div class="mb-3">
-                        <label for="loginEmail" class="form-label fw-bold small text-uppercase text-muted">Correo Electrónico</label>
-                        <div class="input-group">
-                            <span class="input-group-text bg-light border-end-0"><i class="fas fa-envelope text-muted"></i></span>
-                            <input type="email" class="form-control border-start-0 ps-0" id="loginEmail" placeholder="tu@correo.com" required>
+                    <!-- Email Group -->
+                    <div class="form-group-custom">
+                        <label for="loginEmail" class="form-label">Correo Electrónico</label>
+                        <div class="input-group-custom">
+                            <span class="input-icon"><i class="fas fa-envelope"></i></span>
+                            <input type="email" class="form-control-custom" id="loginEmail"
+                                placeholder="nombre@correo.com" required>
                         </div>
                     </div>
 
-                    <div class="mb-4">
-                        <label for="loginPassword" class="form-label fw-bold small text-uppercase text-muted">Contraseña</label>
-                        <div class="input-group">
-                            <span class="input-group-text bg-light border-end-0"><i class="fas fa-lock text-muted"></i></span>
-                            <input type="password" class="form-control border-start-0 border-end-0 ps-0" id="loginPassword" placeholder="••••••••" required>
-                            <button type="button" class="input-group-text bg-light border-start-0" id="togglePassword" style="cursor:pointer;">
-                                <i class="fas fa-eye text-muted"></i>
+                    <!-- Password Group -->
+                    <div class="form-group-custom">
+                        <label for="loginPassword" class="form-label">Contraseña</label>
+                        <div class="input-group-custom">
+                            <span class="input-icon"><i class="fas fa-lock"></i></span>
+                            <input type="password" class="form-control-custom" id="loginPassword" placeholder="••••••••"
+                                required>
+                            <button type="button" class="btn-toggle-pwd" id="togglePassword">
+                                <i class="fas fa-eye"></i>
                             </button>
                         </div>
                     </div>
 
+                    <!-- Actions Row -->
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <div class="form-check">
+                        <div class="form-check d-flex align-items-center gap-2">
                             <input class="form-check-input" type="checkbox" id="rememberMe">
-                            <label class="form-check-label small text-muted" for="rememberMe">Recordarme</label>
+                            <label class="form-check-label small text-muted" for="rememberMe"
+                                style="cursor:pointer; user-select:none;">Recordarme</label>
                         </div>
-                        <a href="recuperar.html" class="text-success text-decoration-none small fw-bold">¿Olvidaste tu clave?</a>
+                        <a href="recuperar.html" class="forgot-link">¿Olvidaste tu clave?</a>
                     </div>
 
-                    <button type="submit" class="btn btn-success btn-lg w-100 rounded-pill fw-bold shadow-sm">
-                        <i class="fas fa-sign-in-alt me-2"></i> Iniciar Sesión
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-submit w-100">
+                        <i class="fas fa-sign-in-alt me-1"></i> Iniciar Sesión
                     </button>
-
-                    <div class="text-center mt-4">
-                        <p class="text-muted small mb-2">Credenciales de prueba:</p>
-                        <div class="d-flex flex-column gap-1">
-                            <small class="text-muted"><strong>Admin:</strong> admin@pnk.cl / admin123</small>
-                            <small class="text-muted"><strong>Gestor:</strong> pedro.s@pnk.cl / gestor123</small>
-                            <small class="text-muted"><strong>Propietario:</strong> ana.m@gmail.com / prop123</small>
-                            <small class="text-muted"><strong>Usuario Normal:</strong> diego.v@gmail.com / user123</small>
-                        </div>
-                    </div>
                 </form>
 
-                <div class="text-center mt-5 pt-3 border-top">
-                    <p class="text-muted small">¿No tienes una cuenta aún?</p>
-                    <div class="d-flex flex-column gap-2">
-                        <a href="registro.html" class="btn btn-outline-success btn-sm rounded-pill fw-bold">Crear Cuenta (Gestor / Propietario)</a>
+                <!-- Elegant Demo Section -->
+                <div class="demo-section">
+                    <button type="button" class="demo-title-btn" id="btnToggleDemo">
+                        <i class="fas fa-key"></i> Acceso rápido para demostración
+                    </button>
+                    <div class="demo-box" id="demoBox">
+                        <div class="demo-grid">
+                            <div class="demo-btn" data-email="admin@pnk.cl" data-pass="admin123">
+                                <span>🛡️ Admin</span>
+                                <small>Acceso Total</small>
+                            </div>
+                            <div class="demo-btn" data-email="pedro.s@pnk.cl" data-pass="gestor123">
+                                <span>📋 Gestor</span>
+                                <small>Pedro Soto</small>
+                            </div>
+                            <div class="demo-btn" data-email="ana.m@gmail.com" data-pass="prop123">
+                                <span>🏠 Propietario</span>
+                                <small>Ana María</small>
+                            </div>
+                            <div class="demo-btn" data-email="diego.v@gmail.com" data-pass="user123">
+                                <span>👤 Usuario</span>
+                                <small>N. Cliente</small>
+                            </div>
+                        </div>
                     </div>
+                </div>
+
+                <!-- Footer Redirect Link -->
+                <div class="register-footer">
+                    ¿No tienes una cuenta? <a href="registro.html" class="register-link">Regístrate aquí</a>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Right Column: Visual Side -->
+        <div class="visual-side">
+            <div class="visual-content">
+                <!-- Header -->
+                <div class="visual-header">
+                    <span class="visual-tag"><i class="fas fa-star me-1"></i> Vistazo</span>
+                    <h2 class="visual-title">Avisos Disponibles</h2>
+                    <p class="visual-subtitle">Descubre algunas de las últimas propiedades agregadas en el portal.</p>
+                </div>
+
+                <!-- Dynamic listings or static fallback -->
+                <div class="visual-listings-container" id="loginPropGrid">
+                    <div class="visual-info-card animate__animated animate__fadeInUp">
+                        <h3>Encuentra tu próximo destino</h3>
+                        <p>Conecta directamente con gestores profesionales en tiempo real, administra tus propiedades de
+                            manera transparente y agenda tus visitas de forma interactiva con Inmobiliaria PNK.</p>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="visual-footer">
+                    <span>Inmobiliaria PNK &copy; 2026</span>
+                    <a href="mapa_interactivo.html" class="text-white text-decoration-none fw-bold small"><i
+                            class="fas fa-map-marked-alt me-1"></i> Ver Mapa Interactivo</a>
                 </div>
             </div>
         </div>
-        <div class="col-lg-8 d-none d-lg-block">
-            <div style="height: 100vh; background: linear-gradient(rgba(16, 185, 129, 0.4), rgba(0,0,0,0.6)), url('img/hero.png'); background-size: cover; background-position: center;">
-            </div>
-        </div>
-    </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="js/utils.js"></script>
-<script src="js/notifications.js"></script>
-<script src="js/app.js"></script>
-<script src="js/auth.js"></script>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/auth.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Toggle de visualización de cuentas demo
+            var btnToggle = document.getElementById('btnToggleDemo');
+            var box = document.getElementById('demoBox');
+            if (btnToggle && box) {
+                btnToggle.addEventListener('click', function () {
+                    var isVisible = box.style.display === 'block';
+                    box.style.display = isVisible ? 'none' : 'block';
+                    btnToggle.innerHTML = isVisible
+                        ? '<i class="fas fa-key"></i> Acceso rápido para demostración'
+                        : '<i class="fas fa-times"></i> Ocultar accesos demo';
+                });
+            }
+
+            // Automatizar el llenado y submit de las cuentas demo
+            var btns = document.querySelectorAll('.demo-btn');
+            btns.forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var email = btn.getAttribute('data-email');
+                    var pass = btn.getAttribute('data-pass');
+
+                    var emailInput = document.getElementById('loginEmail');
+                    var passInput = document.getElementById('loginPassword');
+
+                    if (emailInput && passInput) {
+                        emailInput.value = email;
+                        passInput.value = pass;
+
+                        // Efecto visual de sacudida y submit rápido
+                        var card = btn.closest('.form-wrapper');
+                        if (card) {
+                            card.classList.add('animate__animated', 'animate__pulse');
+                            setTimeout(function () {
+                                card.classList.remove('animate__animated', 'animate__pulse');
+                            }, 500);
+                        }
+
+                        setTimeout(function () {
+                            // Submit automático
+                            var form = document.getElementById('loginForm');
+                            if (form) {
+                                form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+                            }
+                        }, 400);
+
+                        PNK.toast.success('Ingresando credenciales demo...');
+                    }
+                });
+            });
+
+            // ── CARGAR VISTA PILOTO DINÁMICA DE PROPIEDADES ────────
+            PNK.api('propiedades.php?estado=publicado')
+                .then(function (response) {
+                    if (response.success && response.propiedades && response.propiedades.length > 0) {
+                        var grid = document.getElementById('loginPropGrid');
+                        if (!grid) return;
+
+                        // Tomar hasta 3 propiedades
+                        var list = response.propiedades.slice(0, 3);
+                        var html = '';
+
+                        list.forEach(function (p, index) {
+                            var precio = p.precioUF ? PNK.formatUF(p.precioUF) : PNK.formatCLP(p.precioCLP);
+                            if (p.operacion === 'Arriendo') precio += ' / mes';
+
+                            html += '<a href="detalle_propiedad.html?id=' + p.id + '" class="mini-prop-card animate__animated animate__fadeInUp" style="animation-delay: ' + (index * 0.15) + 's">';
+                            html += '<img src="' + PNK.escapeHTML(p.imagen || 'img/prop1.png') + '" class="mini-prop-img" alt="' + PNK.escapeHTML(p.titulo) + '">';
+                            html += '<div class="mini-prop-body">';
+                            html += '<div>';
+                            html += '<h4 class="mini-prop-title">' + PNK.escapeHTML(p.titulo) + '</h4>';
+                            html += '<div class="mini-prop-price">' + precio + '</div>';
+                            html += '</div>';
+                            html += '<div class="mini-prop-meta">';
+                            html += '<span><i class="fas fa-map-marker-alt"></i> ' + PNK.escapeHTML(p.comuna) + '</span>';
+                            if (p.dormitorios) html += '<span><i class="fas fa-bed"></i> ' + p.dormitorios + ' Hab</span>';
+                            if (p.superficieTotal) html += '<span><i class="fas fa-ruler-combined"></i> ' + p.superficieTotal + ' m²</span>';
+                            html += '</div>';
+                            html += '</div>';
+                            html += '</a>';
+                        });
+
+                        grid.innerHTML = html;
+                    }
+                })
+                .catch(function (err) {
+                    console.error('Error al cargar la vista piloto en el login:', err);
+                });
+        });
+    </script>
 </body>
+
 </html>

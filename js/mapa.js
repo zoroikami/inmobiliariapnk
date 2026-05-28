@@ -21,7 +21,7 @@
     };
 
     function createCustomIcon(categoria, isSelected) {
-        var config = PIN_COLORS[categoria] || PIN_COLORS.casa;
+        var config = (categoria && Object.prototype.hasOwnProperty.call(PIN_COLORS, categoria)) ? PIN_COLORS[categoria] : PIN_COLORS.casa;
         var size = isSelected ? 48 : 38;
         var bgColor = isSelected ? '#f59e0b' : config.bg;
         var borderColor = isSelected ? '#fff' : 'rgba(255,255,255,0.9)';
@@ -163,13 +163,9 @@
         selectedPropId = id;
 
         var propiedades = cachedPropiedades;
-        var prop = null;
-        for (var i = 0; i < propiedades.length; i++) {
-            if (propiedades[i].id === id) {
-                prop = propiedades[i];
-                break;
-            }
-        }
+        var prop = propiedades.find(function (p) {
+            return p.id === id;
+        });
 
         if (!prop) return;
 
@@ -203,9 +199,9 @@
         var statusBadge = PNK.getStatusBadge(p.estado);
 
         var featuresHTML = '';
-        if (p.dormitorios) featuresHTML += '<div class="feature-item"><i class="fas fa-bed"></i> ' + p.dormitorios + ' Hab</div>';
-        if (p.banos) featuresHTML += '<div class="feature-item"><i class="fas fa-bath"></i> ' + p.banos + ' Baños</div>';
-        if (p.superficieTotal) featuresHTML += '<div class="feature-item"><i class="fas fa-ruler-combined"></i> ' + p.superficieTotal + ' m²</div>';
+        if (p.dormitorios) featuresHTML += '<div class="feature-item"><i class="fas fa-bed"></i> ' + Number(p.dormitorios) + ' Hab</div>';
+        if (p.banos) featuresHTML += '<div class="feature-item"><i class="fas fa-bath"></i> ' + Number(p.banos) + ' Baños</div>';
+        if (p.superficieTotal) featuresHTML += '<div class="feature-item"><i class="fas fa-ruler-combined"></i> ' + Number(p.superficieTotal) + ' m²</div>';
 
         var extrasHTML = '';
         if (p.extras && p.extras.length) {
@@ -220,8 +216,8 @@
             </button>
             <img src="${PNK.escapeHTML(p.imagen || 'img/prop1.png')}" alt="${PNK.escapeHTML(p.titulo)}">
             <div class="detail-header">
-                <span class="price">${precio}</span>
-                <span class="badge ${statusBadge.class}">${statusBadge.text}</span>
+                <span class="price">${PNK.escapeHTML(precio)}</span>
+                <span class="badge ${PNK.escapeAttr(statusBadge.class)}">${PNK.escapeHTML(statusBadge.text)}</span>
             </div>
             <h2>${PNK.escapeHTML(p.titulo)}</h2>
             <p class="detail-location"><i class="fas fa-map-marker-alt"></i> ${PNK.escapeHTML(p.direccion)}</p>
@@ -229,6 +225,9 @@
             <p class="detail-desc">${PNK.escapeHTML(p.descripcion || '')}</p>
             <div class="features">${featuresHTML}</div>
             ${extrasHTML ? '<div class="extras-grid">' + extrasHTML + '</div>' : ''}
+            <a href="detalle_propiedad.html?id=${PNK.escapeAttr(p.id)}" class="btn-view-details">
+                <i class="fas fa-info-circle me-2"></i>Ver Ficha Completa
+            </a>
             <a href="#" class="btn-buy" onclick="PNK.toast.info('Función de contacto en desarrollo.');return false;">
                 <i class="fas fa-envelope me-2"></i>Contactar Agente
             </a>
@@ -254,19 +253,20 @@
         var html = '';
         propiedades.forEach(function (p) {
             var precio = p.precioUF ? PNK.formatUF(p.precioUF) : PNK.formatCLP(p.precioCLP);
-            var config = PIN_COLORS[p.categoria] || PIN_COLORS.casa;
+            var config = (p.categoria && Object.prototype.hasOwnProperty.call(PIN_COLORS, p.categoria)) ? PIN_COLORS[p.categoria] : PIN_COLORS.casa;
             var isSelected = p.id === selectedPropId;
+            var safeId = String(p.id).replace(/[^a-zA-Z0-9_\-]/g, '');
 
-            html += '<div class="prop-card ' + (isSelected ? 'prop-card-active' : '') + '" onclick="PNK.selectProp(\'' + p.id + '\')">';
+            html += '<div class="prop-card ' + (isSelected ? 'prop-card-active' : '') + '" onclick="PNK.selectProp(\'' + safeId + '\')">';
             html += '<img src="' + PNK.escapeHTML(p.imagen || 'img/prop1.png') + '" alt="' + PNK.escapeHTML(p.titulo) + '">';
             html += '<div class="prop-card-body">';
-            html += '<div class="prop-card-price">' + precio + '</div>';
+            html += '<div class="prop-card-price">' + PNK.escapeHTML(precio) + '</div>';
             html += '<div class="prop-card-title">' + PNK.escapeHTML(p.titulo) + '</div>';
             html += '<div class="prop-card-location"><i class="fas fa-map-marker-alt"></i> ' + PNK.escapeHTML(PNK.truncate(p.direccion, 30)) + '</div>';
             html += '<div class="prop-card-features">';
-            if (p.dormitorios) html += '<span><i class="fas fa-bed"></i> ' + p.dormitorios + '</span>';
-            if (p.banos) html += '<span><i class="fas fa-bath"></i> ' + p.banos + '</span>';
-            if (p.superficieTotal) html += '<span><i class="fas fa-ruler-combined"></i> ' + p.superficieTotal + 'm²</span>';
+            if (p.dormitorios) html += '<span><i class="fas fa-bed"></i> ' + Number(p.dormitorios) + '</span>';
+            if (p.banos) html += '<span><i class="fas fa-bath"></i> ' + Number(p.banos) + '</span>';
+            if (p.superficieTotal) html += '<span><i class="fas fa-ruler-combined"></i> ' + Number(p.superficieTotal) + 'm²</span>';
             html += '</div>';
             html += '</div></div>';
         });
@@ -415,6 +415,15 @@
                         PNK.toast.error('No se pudo obtener tu ubicación.');
                     }
                 );
+            });
+        }
+
+        // Botón Volver al Portal inteligente
+        var btnBack = document.getElementById('backToPortalBtn');
+        if (btnBack) {
+            btnBack.addEventListener('click', function (e) {
+                e.preventDefault();
+                window.location.href = PNK.getDashboardUrl();
             });
         }
 

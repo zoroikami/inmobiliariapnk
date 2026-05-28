@@ -139,26 +139,34 @@
 <script src="js/app.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // ── Configurar back button inteligente ──────────────────
+        var backBtn = document.getElementById('backBtn');
+        if (backBtn) {
+            backBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                // Si hay historial previo, volver atrás; si no, ir al dashboard del rol
+                if (document.referrer && document.referrer.indexOf(window.location.host) !== -1) {
+                    window.history.back();
+                } else {
+                    window.location.href = PNK.getDashboardUrl();
+                }
+            });
+        }
+
         // Obtener ID de la URL
         var propId = PNK.getQueryParam('id');
         if (!propId) {
-            window.location.href = 'index.html';
+            window.location.href = PNK.getDashboardUrl();
             return;
         }
 
         PNK.api('propiedades.php?id=' + propId)
             .then(function(response) {
                 if (!response.success || !response.propiedad) {
-                    window.location.href = 'index.html';
+                    window.location.href = PNK.getDashboardUrl();
                     return;
                 }
                 var prop = response.propiedad;
-
-                // ── Configurar back button ───────────────────────────
-                var backBtn = document.getElementById('backBtn');
-                if (backBtn && document.referrer && document.referrer.indexOf('mapa_interactivo') !== -1) {
-                    backBtn.href = 'mapa_interactivo.html';
-                }
 
                 // ── Hero ─────────────────────────────────────────────
                 document.title = 'Inmobiliaria PNK - ' + prop.titulo;
@@ -303,7 +311,7 @@
             })
             .catch(function(error) {
                 console.error('Error cargando propiedad:', error);
-                window.location.href = 'index.html';
+                window.location.href = PNK.getDashboardUrl();
             });
     });
 </script>

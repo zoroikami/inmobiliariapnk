@@ -13,3 +13,8 @@ bucket-policy.json
 
 # Gemini
 .gemini/
+
+# Bases de datos locales (SQLite)
+*.db
+*.sqlite
+php/inmobiliaria.db

@@ -1,19 +1,127 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Registro de nuevos usuarios en Inmobiliaria PNK.">
     <link rel="icon" type="image/png" href="img/favicon.png">
     <title>Inmobiliaria PNK - Registro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Import: Inter (Matches Dashboard and Login exactly) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Bootstrap -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/dark-mode.css">
-    <script src="js/dark-mode.js"></script>
+    <!-- Animate.css for smooth loading -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    
     <style>
+        :root {
+            --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+            --color-primary: #198754; /* Success Green from index.html (Bootstrap) */
+            --color-primary-dark: #157347; /* Success Hover Green (Bootstrap) */
+            --color-primary-light: rgba(25, 135, 84, 0.08);
+            --color-primary-glow: rgba(25, 135, 84, 0.15);
+            --color-gold: #ffc107; /* Warning Yellow/Gold from index.html (Bootstrap) */
+            --color-text-title: #1f2937; /* Dashboard Text Slate Gray */
+            --color-text-body: #1f2937;
+            --color-text-muted: #6b7280; /* Dashboard Text Muted Gray */
+            --color-border: #cbd5e1;
+            --color-bg-light: #f9fafb; /* Dashboard Background Light */
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: #ffffff;
+            color: var(--color-text-body);
+            min-height: 100vh;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* ── Split Layout Container ─────────────────────────── */
+        .split-container {
+            display: flex;
+            min-height: 100vh;
+            width: 100vw;
+        }
+
+        /* ── Left Column: Form Side (45% Width for Registration) ── */
+        .form-side {
+            width: 45%;
+            min-width: 460px;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 40px 50px;
+            position: relative;
+            z-index: 10;
+            box-shadow: 10px 0 30px rgba(0, 0, 0, 0.02);
+            transition: all 0.3s ease;
+        }
+
+        .form-wrapper {
+            max-width: 480px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* Brand Headings */
+        .brand-logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            text-decoration: none;
+        }
+
+        .brand-icon {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+            border-radius: 9px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+            box-shadow: 0 4px 10px var(--color-primary-glow);
+        }
+
+        .brand-text {
+            font-family: var(--font-main);
+            font-weight: 800;
+            font-size: 1.25rem;
+            letter-spacing: -0.5px;
+            color: var(--color-primary);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .brand-text span {
+            color: var(--color-gold);
+            font-weight: 900;
+        }
+
+        .form-title {
+            font-family: var(--font-main);
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--color-text-title);
+            margin-bottom: 6px;
+            letter-spacing: -0.5px;
+        }
+
+        .form-subtitle {
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+            margin-bottom: 25px;
+        }
+
+        /* ── Elegant Role Selectors (Tabs) ──────────────────── */
         .tab-content {
             display: none;
         }
@@ -22,235 +130,498 @@
         #tab2:checked~.content-gestor,
         #tab3:checked~.content-cliente {
             display: block;
+            animation: fadeIn 0.3s forwards;
         }
 
         .tab-btn {
+            flex: 1;
             cursor: pointer;
-            padding: 1rem;
+            padding: 12px 10px;
             border-radius: 10px;
-            transition: 0.3s;
-            width: 33.33%;
+            border: 1px solid var(--color-border);
+            background-color: var(--color-bg-light);
+            color: var(--color-text-muted);
             text-align: center;
-            font-weight: bold;
-            font-size: 0.9rem;
+            font-weight: 700;
+            font-size: 0.76rem;
+            letter-spacing: 0.5px;
+            transition: all 0.25s ease;
+            user-select: none;
         }
 
-        #tab1:checked~.tabs .btn-propietario {
-            background: #10b981;
-            color: white;
+        .tab-btn:hover {
+            color: var(--color-text-title);
+            border-color: #cbd5e1;
         }
 
-        #tab2:checked~.tabs .btn-gestor {
-            background: #10b981;
-            color: white;
-        }
-
+        #tab1:checked~.tabs .btn-propietario,
+        #tab2:checked~.tabs .btn-gestor,
         #tab3:checked~.tabs .btn-cliente {
-            background: #10b981;
-            color: white;
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+            color: #ffffff;
+            border-color: var(--color-primary-dark);
+            box-shadow: 0 4px 10px var(--color-primary-glow);
+        }
+
+        /* ── Input Styling ─────────────────────────────────── */
+        .form-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--color-text-muted);
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .input-group-custom {
+            display: flex;
+            align-items: center;
+            background-color: var(--color-bg-light);
+            border: 1px solid var(--color-border);
+            border-radius: 10px;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+        }
+
+        .input-group-custom:focus-within {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px var(--color-primary-glow);
+            background-color: #ffffff;
+        }
+
+        .input-icon {
+            padding: 10px 10px 10px 14px;
+            color: var(--color-text-muted);
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .input-group-custom:focus-within .input-icon {
+            color: var(--color-primary);
+        }
+
+        .form-control-custom {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            padding: 10px 12px 10px 0;
+            font-size: 0.88rem;
+            color: var(--color-text-title);
+            font-family: inherit;
+        }
+
+        .form-control-custom::placeholder {
+            color: #94a3b8;
+        }
+
+        /* Form Select Custom */
+        .form-select-custom {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            padding: 10px 12px 10px 0;
+            font-size: 0.88rem;
+            color: var(--color-text-title);
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .form-select-custom option {
+            color: var(--color-text-title);
+            background-color: #ffffff;
+        }
+
+        /* Form File Custom */
+        .form-file-custom {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            padding: 10px 12px 10px 0;
+            font-size: 0.82rem;
+            color: var(--color-text-title);
+            cursor: pointer;
+        }
+
+        /* Submit Buttons */
+        .btn-submit {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+            border: none;
+            color: #ffffff;
+            font-size: 0.92rem;
+            font-weight: 600;
+            padding: 12px;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px var(--color-primary-glow);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-submit:active {
+            transform: translateY(1px);
+        }
+
+        /* ── Right Column: Visual Side (55% Width) ────────── */
+        .visual-side {
+            width: 55%;
+            background: linear-gradient(135deg, rgba(31, 41, 55, 0.4) 0%, rgba(31, 41, 55, 0.8) 100%), url('img/hero.png');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-start;
+            padding: 60px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .visual-info-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 30px 35px;
+            border-radius: 20px;
+            max-width: 520px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .visual-info-card h3 {
+            font-family: var(--font-main);
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        .visual-info-card p {
+            font-size: 0.94rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            margin-bottom: 0;
+        }
+
+        /* ── Responsive Behavior ────────────────────────────── */
+        @media (max-width: 991px) {
+            .visual-side {
+                display: none;
+            }
+
+            .form-side {
+                width: 100%;
+                min-width: 100%;
+                padding: 30px 20px;
+            }
+
+            .form-wrapper {
+                max-width: 480px;
+            }
         }
     </style>
 </head>
+<body>
 
-<body class="bg-light">
-
-    <div class="container py-5">
-        <div class="row justify-content-center">
-            <div class="col-md-10 col-lg-8">
-                <div class="form-card bg-white p-5 rounded-4 shadow-sm border-0">
-                    <div class="text-center mb-5">
-                        <a href="index.html" class="text-decoration-none">
-                            <span class="fw-bold text-success h2">INMOBILIARIA</span>
-                            <span class="text-warning h3">PNK</span>
-                        </a>
-                        <h2 class="fw-bold mt-4">Únete a nosotros</h2>
-                        <p class="text-muted">Selecciona tu rol para comenzar el registro</p>
-                    </div>
-
-                    <input type="radio" name="role" id="tab1" class="d-none" checked>
-                    <input type="radio" name="role" id="tab2" class="d-none">
-                    <input type="radio" name="role" id="tab3" class="d-none">
-
-                    <div class="tabs d-flex gap-2 mb-5">
-                        <label for="tab1" class="tab-btn btn-propietario bg-light border btn-propietario">PROPIETARIO</label>
-                        <label for="tab2" class="tab-btn btn-gestor bg-light border btn-gestor">GESTOR FREE</label>
-                        <label for="tab3" class="tab-btn btn-cliente bg-light border btn-cliente">USUARIO NORMAL</label>
-                    </div>
-
-                    <!-- Form Propietario -->
-                    <div class="tab-content content-propietario">
-                        <h4 class="fw-bold mb-4"><i class="fas fa-key text-warning me-2"></i> Registro de Propietario
-                        </h4>
-                        <form id="formPropietario">
-                            <div class="row g-3">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Nombre Completo</label>
-                                    <input type="text" class="form-control" name="nombre" placeholder="Juan Pérez" required>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">RUT</label>
-                                    <input type="text" class="form-control" name="rut" placeholder="12.345.678-9" required>
-                                </div>
-                            </div>
-                            <div class="row g-3">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Fecha de Nacimiento</label>
-                                    <input type="date" class="form-control" name="fechaNacimiento" required>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Sexo</label>
-                                    <select class="form-select" name="sexo" required>
-                                        <option value="" selected disabled>Seleccionar...</option>
-                                        <option value="M">Masculino</option>
-                                        <option value="F">Femenino</option>
-                                        <option value="O">Otro</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row g-3">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Correo Electrónico</label>
-                                    <input type="email" class="form-control" name="email" placeholder="propietario@ejemplo.com"
-                                        required>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Teléfono Móvil</label>
-                                    <input type="tel" class="form-control" name="telefono" placeholder="+56 9 1234 5678" required>
-                                </div>
-                            </div>
-                            <div class="row g-3">
-                                <div class="col-md-12 mb-3">
-                                    <label class="form-label">N° de Propiedad (Bienes Raíces)</label>
-                                    <input type="text" class="form-control" name="nPropiedad" placeholder="Ej: 1234-56" required>
-                                    <small class="text-muted">Dato obligatorio para validación de titularidad.</small>
-                                </div>
-                            </div>
-                            <div class="mb-4">
-                                <label class="form-label">Contraseña</label>
-                                <input type="password" class="form-control" name="password" placeholder="••••••••" required>
-                            </div>
-                            <button type="submit" class="btn btn-success btn-lg w-100 rounded-pill fw-bold">Crear Cuenta
-                                de Propietario</button>
-                        </form>
-                    </div>
-
-                    <!-- Form Gestor -->
-                    <div class="tab-content content-gestor">
-                        <h4 class="fw-bold mb-4"><i class="fas fa-user-tie text-primary me-2"></i> Registro de Gestor Inmobiliario Free
-                        </h4>
-                        <p class="text-muted small mb-4">Tu cuenta será habilitada por un administrador tras el registro.</p>
-                        <form id="formGestor">
-                            <div class="row g-3">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Nombre Completo</label>
-                                    <input type="text" class="form-control" name="nombre" placeholder="Ana Silva" required>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">RUT</label>
-                                    <input type="text" class="form-control" name="rut" placeholder="12.345.678-9" required>
-                                </div>
-                            </div>
-                            <div class="row g-3">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Fecha de Nacimiento</label>
-                                    <input type="date" class="form-control" name="fechaNacimiento" required>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Sexo</label>
-                                    <select class="form-select" name="sexo" required>
-                                        <option value="" selected disabled>Seleccionar...</option>
-                                        <option value="M">Masculino</option>
-                                        <option value="F">Femenino</option>
-                                        <option value="O">Otro</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row g-3">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Email Corporativo</label>
-                                    <input type="email" class="form-control" name="email" placeholder="gestor@agencia.com" required>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Teléfono Móvil</label>
-                                    <input type="tel" class="form-control" name="telefono" placeholder="+56 9 2345 6789" required>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Certificado de Antecedentes (PDF)</label>
-                                <input type="file" class="form-control" accept=".pdf">
-                                <small class="text-muted">Requerido para validación de cuenta PENKA.</small>
-                            </div>
-                            <div class="mb-4">
-                                <label class="form-label">Contraseña</label>
-                                <input type="password" class="form-control" name="password" placeholder="••••••••" required>
-                            </div>
-                            <button type="submit" class="btn btn-success btn-lg w-100 rounded-pill fw-bold">Solicitar Registro como Gestor Free</button>
-                        </form>
-                    </div>
-
-                    <!-- Form Cliente -->
-                    <div class="tab-content content-cliente">
-                        <h4 class="fw-bold mb-4"><i class="fas fa-user text-info me-2"></i> Registro de Usuario Normal
-                        </h4>
-                        <p class="text-muted small mb-4">Regístrate para buscar propiedades, agendar visitas y contactar gestores.</p>
-                        <form id="formCliente">
-                            <div class="row g-3">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Nombre Completo</label>
-                                    <input type="text" class="form-control" name="nombre" placeholder="Juan Pérez" required>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">RUT</label>
-                                    <input type="text" class="form-control" name="rut" placeholder="12.345.678-9" required>
-                                </div>
-                            </div>
-                            <div class="row g-3">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Fecha de Nacimiento</label>
-                                    <input type="date" class="form-control" name="fechaNacimiento" required>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Sexo</label>
-                                    <select class="form-select" name="sexo" required>
-                                        <option value="" selected disabled>Seleccionar...</option>
-                                        <option value="M">Masculino</option>
-                                        <option value="F">Femenino</option>
-                                        <option value="O">Otro</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row g-3">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Correo Electrónico</label>
-                                    <input type="email" class="form-control" name="email" placeholder="usuario@ejemplo.com" required>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Teléfono Móvil</label>
-                                    <input type="tel" class="form-control" name="telefono" placeholder="+56 9 1234 5678" required>
-                                </div>
-                            </div>
-                            <div class="mb-4">
-                                <label class="form-label">Contraseña</label>
-                                <input type="password" class="form-control" name="password" placeholder="••••••••" required>
-                            </div>
-                            <button type="submit" class="btn btn-success btn-lg w-100 rounded-pill fw-bold">Crear Cuenta de Usuario</button>
-                        </form>
-                    </div>
-
-                    <div class="text-center mt-4 pt-3 border-top">
-                        <p class="text-muted small">¿Ya tienes cuenta? <a href="login.html" class="text-success fw-bold text-decoration-none">Inicia Sesión</a></p>
-                    </div>
-
+<div class="split-container">
+    
+    <!-- Left Column: Form Side -->
+    <div class="form-side">
+        <div class="form-wrapper animate__animated animate__fadeIn">
+            
+            <!-- Brand Logo -->
+            <a href="index.html" class="brand-logo-container">
+                <div class="brand-icon">
+                    <i class="fas fa-home"></i>
                 </div>
+                <h1 class="brand-text">INMOBILIARIA <span>PNK</span></h1>
+            </a>
+
+            <!-- Heading -->
+            <h2 class="form-title">Únete a nosotros</h2>
+            <p class="form-subtitle">Selecciona tu rol para comenzar el registro.</p>
+
+            <!-- Tabs Radio Inputs -->
+            <input type="radio" name="role" id="tab1" class="d-none" checked>
+            <input type="radio" name="role" id="tab2" class="d-none">
+            <input type="radio" name="role" id="tab3" class="d-none">
+
+            <!-- Elegant Role Buttons -->
+            <div class="tabs d-flex gap-2 mb-4">
+                <label for="tab1" class="tab-btn btn-propietario">PROPIETARIO</label>
+                <label for="tab2" class="tab-btn btn-gestor">GESTOR FREE</label>
+                <label for="tab3" class="tab-btn btn-cliente">USUARIO NORMAL</label>
             </div>
+
+            <!-- Form Propietario -->
+            <div class="tab-content content-propietario">
+                <form id="formPropietario">
+                    <div class="row g-2 mb-2">
+                        <div class="col-md-6">
+                            <label class="form-label">Nombre Completo</label>
+                            <div class="input-group-custom">
+                                <span class="input-icon"><i class="fas fa-user"></i></span>
+                                <input type="text" class="form-control-custom" name="nombre" placeholder="Juan Pérez" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">RUT</label>
+                            <div class="input-group-custom">
+                                <span class="input-icon"><i class="fas fa-id-card"></i></span>
+                                <input type="text" class="form-control-custom" name="rut" placeholder="12.345.678-9" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-2 mb-2">
+                        <div class="col-md-6">
+                            <label class="form-label">Fecha de Nacimiento</label>
+                            <div class="input-group-custom">
+                                <span class="input-icon"><i class="fas fa-calendar-alt"></i></span>
+                                <input type="date" class="form-control-custom" name="fechaNacimiento" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Sexo</label>
+                            <div class="input-group-custom">
+                                <span class="input-icon"><i class="fas fa-venus-mars"></i></span>
+                                <select class="form-select-custom" name="sexo" required>
+                                    <option value="" selected disabled>Seleccionar...</option>
+                                    <option value="M">Masculino</option>
+                                    <option value="F">Femenino</option>
+                                    <option value="O">Otro</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-2 mb-2">
+                        <div class="col-md-6">
+                            <label class="form-label">Correo Electrónico</label>
+                            <div class="input-group-custom">
+                                <span class="input-icon"><i class="fas fa-envelope"></i></span>
+                                <input type="email" class="form-control-custom" name="email" placeholder="propietario@ejemplo.com" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Teléfono Móvil</label>
+                            <div class="input-group-custom">
+                                <span class="input-icon"><i class="fas fa-phone"></i></span>
+                                <input type="tel" class="form-control-custom" name="telefono" placeholder="+56 9 1234 5678" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group-custom mb-2">
+                        <label class="form-label">N° de Propiedad (Bienes Raíces)</label>
+                        <div class="input-group-custom">
+                            <span class="input-icon"><i class="fas fa-building"></i></span>
+                            <input type="text" class="form-control-custom" name="nPropiedad" placeholder="Ej: 1234-56" required>
+                        </div>
+                        <small class="text-muted" style="font-size: 0.65rem;">Dato obligatorio para validación de titularidad.</small>
+                    </div>
+
+                    <div class="form-group-custom mb-4">
+                        <label class="form-label">Contraseña</label>
+                        <div class="input-group-custom">
+                            <span class="input-icon"><i class="fas fa-lock"></i></span>
+                            <input type="password" class="form-control-custom" name="password" placeholder="••••••••" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-submit w-100">
+                        <i class="fas fa-user-plus me-1"></i> Crear Cuenta de Propietario
+                    </button>
+                </form>
+            </div>
+
+            <!-- Form Gestor -->
+            <div class="tab-content content-gestor">
+                <form id="formGestor">
+                    <div class="row g-2 mb-2">
+                        <div class="col-md-6">
+                            <label class="form-label">Nombre Completo</label>
+                            <div class="input-group-custom">
+                                <span class="input-icon"><i class="fas fa-user"></i></span>
+                                <input type="text" class="form-control-custom" name="nombre" placeholder="Ana Silva" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">RUT</label>
+                            <div class="input-group-custom">
+                                <span class="input-icon"><i class="fas fa-id-card"></i></span>
+                                <input type="text" class="form-control-custom" name="rut" placeholder="12.345.678-9" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-2 mb-2">
+                        <div class="col-md-6">
+                            <label class="form-label">Fecha de Nacimiento</label>
+                            <div class="input-group-custom">
+                                <span class="input-icon"><i class="fas fa-calendar-alt"></i></span>
+                                <input type="date" class="form-control-custom" name="fechaNacimiento" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Sexo</label>
+                            <div class="input-group-custom">
+                                <span class="input-icon"><i class="fas fa-venus-mars"></i></span>
+                                <select class="form-select-custom" name="sexo" required>
+                                    <option value="" selected disabled>Seleccionar...</option>
+                                    <option value="M">Masculino</option>
+                                    <option value="F">Femenino</option>
+                                    <option value="O">Otro</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-2 mb-2">
+                        <div class="col-md-6">
+                            <label class="form-label">Email Corporativo</label>
+                            <div class="input-group-custom">
+                                <span class="input-icon"><i class="fas fa-envelope"></i></span>
+                                <input type="email" class="form-control-custom" name="email" placeholder="gestor@agencia.com" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Teléfono Móvil</label>
+                            <div class="input-group-custom">
+                                <span class="input-icon"><i class="fas fa-phone"></i></span>
+                                <input type="tel" class="form-control-custom" name="telefono" placeholder="+56 9 2345 6789" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group-custom mb-2">
+                        <label class="form-label">Certificado de Antecedentes (PDF)</label>
+                        <div class="input-group-custom">
+                            <span class="input-icon"><i class="fas fa-file-pdf"></i></span>
+                            <input type="file" class="form-file-custom" accept=".pdf">
+                        </div>
+                        <small class="text-muted" style="font-size: 0.65rem;">Requerido para validación de cuenta PENKA.</small>
+                    </div>
+
+                    <div class="form-group-custom mb-4">
+                        <label class="form-label">Contraseña</label>
+                        <div class="input-group-custom">
+                            <span class="input-icon"><i class="fas fa-lock"></i></span>
+                            <input type="password" class="form-control-custom" name="password" placeholder="••••••••" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-submit w-100">
+                        <i class="fas fa-user-plus me-1"></i> Solicitar Registro de Gestor Free
+                    </button>
+                </form>
+            </div>
+
+            <!-- Form Cliente -->
+            <div class="tab-content content-cliente">
+                <form id="formCliente">
+                    <div class="row g-2 mb-2">
+                        <div class="col-md-6">
+                            <label class="form-label">Nombre Completo</label>
+                            <div class="input-group-custom">
+                                <span class="input-icon"><i class="fas fa-user"></i></span>
+                                <input type="text" class="form-control-custom" name="nombre" placeholder="Juan Pérez" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">RUT</label>
+                            <div class="input-group-custom">
+                                <span class="input-icon"><i class="fas fa-id-card"></i></span>
+                                <input type="text" class="form-control-custom" name="rut" placeholder="12.345.678-9" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-2 mb-2">
+                        <div class="col-md-6">
+                            <label class="form-label">Fecha de Nacimiento</label>
+                            <div class="input-group-custom">
+                                <span class="input-icon"><i class="fas fa-calendar-alt"></i></span>
+                                <input type="date" class="form-control-custom" name="fechaNacimiento" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Sexo</label>
+                            <div class="input-group-custom">
+                                <span class="input-icon"><i class="fas fa-venus-mars"></i></span>
+                                <select class="form-select-custom" name="sexo" required>
+                                    <option value="" selected disabled>Seleccionar...</option>
+                                    <option value="M">Masculino</option>
+                                    <option value="F">Femenino</option>
+                                    <option value="O">Otro</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-2 mb-2">
+                        <div class="col-md-6">
+                            <label class="form-label">Correo Electrónico</label>
+                            <div class="input-group-custom">
+                                <span class="input-icon"><i class="fas fa-envelope"></i></span>
+                                <input type="email" class="form-control-custom" name="email" placeholder="usuario@ejemplo.com" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Teléfono Móvil</label>
+                            <div class="input-group-custom">
+                                <span class="input-icon"><i class="fas fa-phone"></i></span>
+                                <input type="tel" class="form-control-custom" name="telefono" placeholder="+56 9 1234 5678" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group-custom mb-4">
+                        <label class="form-label">Contraseña</label>
+                        <div class="input-group-custom">
+                            <span class="input-icon"><i class="fas fa-lock"></i></span>
+                            <input type="password" class="form-control-custom" name="password" placeholder="••••••••" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-submit w-100">
+                        <i class="fas fa-user-plus me-1"></i> Crear Cuenta de Usuario
+                    </button>
+                </form>
+            </div>
+
+            <!-- Footer Redirect -->
+            <div class="register-footer">
+                ¿Ya tienes una cuenta? <a href="login.html" class="register-link">Inicia Sesión</a>
+            </div>
+
         </div>
     </div>
 
+    <!-- Right Column: Visual Side -->
+    <div class="visual-side">
+        <div class="visual-info-card animate__animated animate__fadeInUp">
+            <h3>Comienza tu viaje hoy</h3>
+            <p>Únete a nuestra plataforma inmobiliaria premium. Regístrate en segundos para publicar propiedades, gestionar tus visitas de forma relacional, o chatear en tiempo real.</p>
+        </div>
+    </div>
+
+</div>
+
+<!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="js/utils.js"></script>
 <script src="js/notifications.js"></script>
 <script src="js/app.js"></script>
 <script src="js/auth.js"></script>
 </body>
-
 </html>

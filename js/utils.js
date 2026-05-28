@@ -53,6 +53,18 @@ PNK.clearSession = function () {
     sessionStorage.removeItem(PNK.KEYS.SESION);
 };
 
+// ── Obtener URL del dashboard según el rol del usuario ────────
+PNK.getDashboardUrl = function () {
+    var session = PNK.getSession();
+    if (!session) return 'index.html';
+    switch (session.rol) {
+        case 'admin': return 'dashboard_admin.html';
+        case 'gestor': return 'dashboard_gestor.html';
+        case 'propietario': return 'dashboard_propietario.html';
+        default: return 'index.html';
+    }
+};
+
 // ── Generador de IDs ──────────────────────────────────────────
 PNK.generateId = function () {
     return 'id_' + Date.now().toString(36) + '_' + Math.random().toString(36).substr(2, 9);
@@ -195,6 +207,18 @@ PNK.escapeHTML = function (str) {
     const div = document.createElement('div');
     div.textContent = str;
     return div.innerHTML;
+};
+
+// ── Escapar Atributos HTML ────────────────────────────────────
+PNK.escapeAttr = function (str) {
+    if (!str) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#x27;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/\//g, '&#x2F;');
 };
 
 // ── Truncar texto ─────────────────────────────────────────────

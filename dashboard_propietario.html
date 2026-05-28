@@ -146,8 +146,9 @@
             html += '<h5 class="fw-bold mb-1">' + PNK.escapeHTML(p.titulo) + '</h5>';
             html += '<p class="text-muted small">Estado: <span class="badge ' + statusBadge.class + '">' + statusBadge.text + '</span></p>';
             html += '<p class="text-muted small"><i class="fas fa-map-marker-alt me-1"></i> ' + PNK.escapeHTML(p.direccion) + '</p>';
-            html += '<div class="d-flex justify-content-between mt-3">';
+            html += '<div class="d-flex justify-content-between align-items-center mt-3">';
             html += '<span class="fw-bold text-success">' + precio + '</span>';
+            html += '<a href="detalle_propiedad.html?id=' + p.id + '" class="btn btn-sm btn-outline-success rounded-pill fw-bold px-3">Ver detalles</a>';
             html += '</div>';
             html += '</div></div></div>';
         });
