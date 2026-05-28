@@ -21,7 +21,10 @@
     };
 
     function createCustomIcon(categoria, isSelected) {
-        var config = (categoria && Object.prototype.hasOwnProperty.call(PIN_COLORS, categoria)) ? PIN_COLORS[categoria] : PIN_COLORS.casa;
+        var config = PIN_COLORS.casa;
+        if (categoria === 'depto') config = PIN_COLORS.depto;
+        else if (categoria === 'terreno') config = PIN_COLORS.terreno;
+        else if (categoria === 'comercial') config = PIN_COLORS.comercial;
         var size = isSelected ? 48 : 38;
         var bgColor = isSelected ? '#f59e0b' : config.bg;
         var borderColor = isSelected ? '#fff' : 'rgba(255,255,255,0.9)';
@@ -253,7 +256,10 @@
         var html = '';
         propiedades.forEach(function (p) {
             var precio = p.precioUF ? PNK.formatUF(p.precioUF) : PNK.formatCLP(p.precioCLP);
-            var config = (p.categoria && Object.prototype.hasOwnProperty.call(PIN_COLORS, p.categoria)) ? PIN_COLORS[p.categoria] : PIN_COLORS.casa;
+            var config = PIN_COLORS.casa;
+            if (p.categoria === 'depto') config = PIN_COLORS.depto;
+            else if (p.categoria === 'terreno') config = PIN_COLORS.terreno;
+            else if (p.categoria === 'comercial') config = PIN_COLORS.comercial;
             var isSelected = p.id === selectedPropId;
             var safeId = String(p.id).replace(/[^a-zA-Z0-9_\-]/g, '');
 

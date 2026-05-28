@@ -49,23 +49,25 @@
                 var precio = p.precioUF ? PNK.formatUF(p.precioUF) : PNK.formatCLP(p.precioCLP);
                 if (p.operacion === 'Arriendo') precio += ' / mes';
 
+                var safeId = String(p.id).replace(/[^a-zA-Z0-9_\-]/g, '');
+
                 html += '<tr>';
                 html += '<td><img src="' + PNK.escapeHTML(p.imagen || 'img/prop1.png') + '" style="width:50px;height:50px;object-fit:cover;border-radius:8px;" alt="' + PNK.escapeHTML(p.titulo) + '"></td>';
                 html += '<td class="small fw-bold">' + PNK.escapeHTML(p.codigo) + '</td>';
-                html += '<td><div class="fw-bold">' + PNK.escapeHTML(p.titulo) + '</div><div class="small text-muted">' + PNK.escapeHTML(p.tipo) + ' • ' + (p.dormitorios || 0) + 'D/' + (p.banos || 0) + 'B</div></td>';
+                html += '<td><div class="fw-bold">' + PNK.escapeHTML(p.titulo) + '</div><div class="small text-muted">' + PNK.escapeHTML(p.tipo) + ' • ' + Number(p.dormitorios || 0) + 'D/' + Number(p.banos || 0) + 'B</div></td>';
                 html += '<td class="small">' + PNK.escapeHTML(p.direccion) + '</td>';
-                html += '<td class="text-success fw-bold">' + precio + '</td>';
-                html += '<td><span class="badge ' + statusBadge.class + '">' + statusBadge.text + '</span></td>';
+                html += '<td class="text-success fw-bold">' + PNK.escapeHTML(precio) + '</td>';
+                html += '<td><span class="badge ' + PNK.escapeAttr(statusBadge.class) + '">' + PNK.escapeHTML(statusBadge.text) + '</span></td>';
                 html += '<td>';
-                html += '<a href="detalle_propiedad.html?id=' + p.id + '" class="btn btn-sm btn-outline-primary me-1" title="Ver Ficha" target="_blank"><i class="fas fa-eye"></i></a>';
-                html += '<a href="nueva_propiedad.html?id=' + p.id + '" class="btn btn-sm btn-outline-secondary me-1" title="Editar"><i class="fas fa-edit"></i></a>';
+                html += '<a href="detalle_propiedad.html?id=' + PNK.escapeAttr(p.id) + '" class="btn btn-sm btn-outline-primary me-1" title="Ver Ficha" target="_blank"><i class="fas fa-eye"></i></a>';
+                html += '<a href="nueva_propiedad.html?id=' + PNK.escapeAttr(p.id) + '" class="btn btn-sm btn-outline-secondary me-1" title="Editar"><i class="fas fa-edit"></i></a>';
                 html += '<div class="btn-group me-1"><button class="btn btn-sm btn-outline-info dropdown-toggle" data-bs-toggle="dropdown" title="Cambiar Estado"><i class="fas fa-exchange-alt"></i></button>';
                 html += '<ul class="dropdown-menu">';
-                html += '<li><a class="dropdown-item" href="#" onclick="PNK.cambiarEstadoProp(\'' + p.id + '\',\'publicado\');return false;"><i class="fas fa-check-circle text-success me-2"></i>Publicado</a></li>';
-                html += '<li><a class="dropdown-item" href="#" onclick="PNK.cambiarEstadoProp(\'' + p.id + '\',\'arrendado\');return false;"><i class="fas fa-handshake text-warning me-2"></i>Arrendado</a></li>';
-                html += '<li><a class="dropdown-item" href="#" onclick="PNK.cambiarEstadoProp(\'' + p.id + '\',\'no_publicado\');return false;"><i class="fas fa-eye-slash text-secondary me-2"></i>No Publicado</a></li>';
+                html += '<li><a class="dropdown-item" href="#" onclick="PNK.cambiarEstadoProp(\'' + safeId + '\',\'publicado\');return false;"><i class="fas fa-check-circle text-success me-2"></i>Publicado</a></li>';
+                html += '<li><a class="dropdown-item" href="#" onclick="PNK.cambiarEstadoProp(\'' + safeId + '\',\'arrendado\');return false;"><i class="fas fa-handshake text-warning me-2"></i>Arrendado</a></li>';
+                html += '<li><a class="dropdown-item" href="#" onclick="PNK.cambiarEstadoProp(\'' + safeId + '\',\'no_publicado\');return false;"><i class="fas fa-eye-slash text-secondary me-2"></i>No Publicado</a></li>';
                 html += '</ul></div>';
-                html += '<button class="btn btn-sm btn-outline-danger" onclick="PNK.eliminarPropiedad(\'' + p.id + '\')" title="Eliminar"><i class="fas fa-trash"></i></button>';
+                html += '<button class="btn btn-sm btn-outline-danger" onclick="PNK.eliminarPropiedad(\'' + safeId + '\')" title="Eliminar"><i class="fas fa-trash"></i></button>';
                 html += '</td>';
                 html += '</tr>';
             });
@@ -162,18 +164,18 @@
 
                         // Checkboxes extras
                         var extras = prop.extras || [];
-                        var checkboxMap = {
-                            'Bodega': 'checkBodega',
-                            'Estacionamiento': 'checkEstacionamiento',
-                            'Logia': 'checkLogia',
-                            'Cocina Amoblada': 'checkCocina',
-                            'Antejardín': 'checkAntejardin',
-                            'Patio Trasero': 'checkPatio',
-                            'Piscina': 'checkPiscina',
-                            'Seguridad 24/7': 'checkSeguridad'
-                        };
                         extras.forEach(function (extra) {
-                            var checkId = checkboxMap[extra];
+                            var checkId = '';
+                            switch (extra) {
+                                case 'Bodega': checkId = 'checkBodega'; break;
+                                case 'Estacionamiento': checkId = 'checkEstacionamiento'; break;
+                                case 'Logia': checkId = 'checkLogia'; break;
+                                case 'Cocina Amoblada': checkId = 'checkCocina'; break;
+                                case 'Antejardín': checkId = 'checkAntejardin'; break;
+                                case 'Patio Trasero': checkId = 'checkPatio'; break;
+                                case 'Piscina': checkId = 'checkPiscina'; break;
+                                case 'Seguridad 24/7': checkId = 'checkSeguridad'; break;
+                            }
                             if (checkId) {
                                 var cb = document.getElementById(checkId);
                                 if (cb) cb.checked = true;

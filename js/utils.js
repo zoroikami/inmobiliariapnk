@@ -98,7 +98,7 @@ PNK.validateRUT = function (rut) {
     let sum = 0;
     let multiplier = 2;
     for (let i = body.length - 1; i >= 0; i--) {
-        sum += parseInt(body[i]) * multiplier;
+        sum += parseInt(body.charAt(i)) * multiplier;
         multiplier = multiplier === 7 ? 2 : multiplier + 1;
     }
     const expectedDV = 11 - (sum % 11);
@@ -149,43 +149,55 @@ PNK.getInitials = function (name) {
     if (!name) return '??';
     const parts = name.trim().split(/\s+/);
     if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
-    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
 };
 
 // ── Color de avatar basado en rol ─────────────────────────────
 PNK.getAvatarColor = function (role) {
-    const colors = {
-        'admin': '#6366f1',
-        'gestor': '#10b981',
-        'propietario': '#f59e0b'
-    };
-    return colors[role] || '#6b7280';
+    if (role === 'admin') return '#6366f1';
+    if (role === 'gestor') return '#10b981';
+    if (role === 'propietario') return '#f59e0b';
+    return '#6b7280';
 };
 
 // ── Badge de estado ───────────────────────────────────────────
 PNK.getStatusBadge = function (status) {
-    const badges = {
-        'activo': { class: 'bg-success', text: 'Activo' },
-        'habilitado': { class: 'bg-success', text: 'Habilitado' },
-        'deshabilitado': { class: 'bg-danger', text: 'Deshabilitado' },
-        'pendiente': { class: 'bg-warning text-dark', text: 'Pendiente' },
-        'sistema': { class: 'bg-success', text: 'Sistema' },
-        'publicado': { class: 'bg-success', text: 'Publicado' },
-        'arrendado': { class: 'bg-warning text-dark', text: 'Arrendado' },
-        'no_publicado': { class: 'bg-secondary', text: 'No Publicado' }
-    };
-    return badges[status] || { class: 'bg-secondary', text: status };
+    switch (status) {
+        case 'activo':
+            return { class: 'bg-success', text: 'Activo' };
+        case 'habilitado':
+            return { class: 'bg-success', text: 'Habilitado' };
+        case 'deshabilitado':
+            return { class: 'bg-danger', text: 'Deshabilitado' };
+        case 'pendiente':
+            return { class: 'bg-warning text-dark', text: 'Pendiente' };
+        case 'sistema':
+            return { class: 'bg-success', text: 'Sistema' };
+        case 'publicado':
+            return { class: 'bg-success', text: 'Publicado' };
+        case 'arrendado':
+            return { class: 'bg-warning text-dark', text: 'Arrendado' };
+        case 'no_publicado':
+            return { class: 'bg-secondary', text: 'No Publicado' };
+        default:
+            return { class: 'bg-secondary', text: status };
+    }
 };
 
 // ── Badge de rol ──────────────────────────────────────────────
 PNK.getRoleBadge = function (role) {
-    const badges = {
-        'admin': { class: 'bg-primary text-white', text: 'Administrador' },
-        'gestor': { class: 'bg-light text-dark border', text: 'Gestor Free' },
-        'propietario': { class: 'bg-light text-dark border', text: 'Propietario' },
-        'cliente': { class: 'bg-info text-white', text: 'Usuario Normal' }
-    };
-    return badges[role] || { class: 'bg-secondary', text: role };
+    switch (role) {
+        case 'admin':
+            return { class: 'bg-primary text-white', text: 'Administrador' };
+        case 'gestor':
+            return { class: 'bg-light text-dark border', text: 'Gestor Free' };
+        case 'propietario':
+            return { class: 'bg-light text-dark border', text: 'Propietario' };
+        case 'cliente':
+            return { class: 'bg-info text-white', text: 'Usuario Normal' };
+        default:
+            return { class: 'bg-secondary', text: role };
+    }
 };
 
 // ── Formateo de fecha ─────────────────────────────────────────
