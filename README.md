@@ -3,7 +3,7 @@
 Sistema web de gestión inmobiliaria para la Región de Coquimbo, Chile.
 
 ## 🌐 Demo en Vivo
-**[http://inmobiliariapnk-keoni.s3-website-us-east-1.amazonaws.com](http://inmobiliariapnk-keoni.s3-website-us-east-1.amazonaws.com)**
+**[http://34.227.52.37/](http://34.227.52.37/)**
 
 ## 📋 Descripción
 Plataforma inmobiliaria que permite la gestión de propiedades y usuarios con roles diferenciados (Administrador, Gestor y Propietario). Incluye mapa interactivo con Leaflet.js, CRUD completo, validación de RUT chileno y notificaciones con SweetAlert2.
