@@ -3,7 +3,7 @@
 Sistema web de gestión inmobiliaria para la Región de Coquimbo, Chile.
 
 ## 🌐 Demo en Vivo
-**[http://34.227.52.37/](http://34.227.52.37/)**
+**[http://34.227.52.37/](http://50.19.28.80/)**
 
 ## 📋 Descripción
 Plataforma inmobiliaria que permite la gestión de propiedades y usuarios con roles diferenciados (Administrador, Gestor y Propietario). Incluye mapa interactivo con Leaflet.js, CRUD completo, validación de RUT chileno y notificaciones con SweetAlert2.
