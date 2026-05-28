@@ -10,6 +10,7 @@
 
     var map, markersLayer, allMarkers = [];
     var selectedPropId = null;
+    var cachedPropiedades = [];
 
     // ── Íconos personalizados por categoría ───────────────────
     var PIN_COLORS = {
@@ -70,17 +71,24 @@
         // Layer para marcadores
         markersLayer = L.layerGroup().addTo(map);
 
-        // Cargar propiedades
-        loadMarkers();
-
         // Setup de filtros
         setupFilters();
 
         // Setup de controles
         setupControls();
 
-        // Renderizar lista en panel
-        renderPropertyList();
+        // Cargar propiedades de forma asíncrona
+        PNK.api('propiedades.php')
+            .then(function (data) {
+                if (data.success && data.propiedades) {
+                    cachedPropiedades = data.propiedades;
+                    loadMarkers();
+                }
+            })
+            .catch(function (err) {
+                console.error('Error cargando propiedades en el mapa:', err);
+                PNK.toast.error('Error al cargar propiedades del servidor.');
+            });
     }
 
     // ── Cargar marcadores desde localStorage ──────────────────
@@ -88,7 +96,7 @@
         markersLayer.clearLayers();
         allMarkers = [];
 
-        var propiedades = PNK.getData(PNK.KEYS.PROPIEDADES);
+        var propiedades = [...cachedPropiedades];
 
         // Aplicar filtros
         if (filters) {
@@ -139,7 +147,7 @@
 
         // Actualizar contador
         var counter = document.getElementById('propCounter');
-        var total = PNK.getData(PNK.KEYS.PROPIEDADES).filter(function (p) {
+        var total = cachedPropiedades.filter(function (p) {
             return p.estado === 'publicado' || p.estado === 'arrendado';
         }).length;
         if (counter) {
@@ -154,7 +162,7 @@
     function selectProperty(id) {
         selectedPropId = id;
 
-        var propiedades = PNK.getData(PNK.KEYS.PROPIEDADES);
+        var propiedades = cachedPropiedades;
         var prop = null;
         for (var i = 0; i < propiedades.length; i++) {
             if (propiedades[i].id === id) {
@@ -233,7 +241,7 @@
         if (!listPanel) return;
 
         if (!propiedades) {
-            propiedades = PNK.getData(PNK.KEYS.PROPIEDADES).filter(function (p) {
+            propiedades = cachedPropiedades.filter(function (p) {
                 return p.estado === 'publicado' || p.estado === 'arrendado';
             });
         }

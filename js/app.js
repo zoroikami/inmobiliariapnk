@@ -48,6 +48,19 @@
             estado: 'activo',
             password: 'prop123',
             fechaCreacion: '2026-02-20'
+        },
+        {
+            id: 'usr_cli_001',
+            nombre: 'Diego Valdivia',
+            rut: '15.678.901-2',
+            email: 'diego.v@gmail.com',
+            telefono: '+56 9 7654 3210',
+            fechaNacimiento: '1993-08-25',
+            sexo: 'M',
+            rol: 'cliente',
+            estado: 'activo',
+            password: 'user123',
+            fechaCreacion: '2026-04-10'
         }
     ];
 
@@ -317,7 +330,7 @@
     ];
 
     // ── Función de inicialización ─────────────────────────────
-    var DATA_VERSION = '7.0'; // v7: fotos reales de cada proyecto específico
+    var DATA_VERSION = '8.0'; // v8: soporte para usuario normal (cliente) y validación flexible
     function initApp() {
         var currentVersion = localStorage.getItem('pnk_data_version');
         // Cargar datos semilla si es primera vez O si la versión cambió

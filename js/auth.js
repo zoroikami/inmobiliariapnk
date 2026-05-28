@@ -44,7 +44,10 @@
     };
 
     // ── Logout ────────────────────────────────────────────────
-    PNK.logout = function () {
+    PNK.logout = async function () {
+        try {
+            await PNK.api('auth.php?action=logout');
+        } catch (e) {}
         PNK.clearSession();
         window.location.href = 'login.html';
     };
@@ -69,7 +72,7 @@
         var form = document.getElementById('loginForm');
         if (!form) return;
 
-        form.addEventListener('submit', function (e) {
+        form.addEventListener('submit', async function (e) {
             e.preventDefault();
 
             var email = document.getElementById('loginEmail').value.trim();
@@ -85,64 +88,36 @@
                 return;
             }
 
-            // Buscar usuario
-            var usuarios = PNK.getData(PNK.KEYS.USUARIOS);
-            var user = null;
-            for (var i = 0; i < usuarios.length; i++) {
-                if (usuarios[i].email.toLowerCase() === email.toLowerCase()) {
-                    user = usuarios[i];
-                    break;
+            try {
+                const response = await PNK.api('auth.php?action=login', {
+                    method: 'POST',
+                    body: { email, password }
+                });
+
+                if (response.success) {
+                    PNK.setSession(response.user);
+                    PNK.toast.success(response.message);
+
+                    // Redirigir según rol
+                    setTimeout(function () {
+                        switch (response.user.rol) {
+                            case 'admin':
+                                window.location.href = 'dashboard_admin.html';
+                                break;
+                            case 'gestor':
+                                window.location.href = 'dashboard_gestor.html';
+                                break;
+                            case 'propietario':
+                                window.location.href = 'dashboard_propietario.html';
+                                break;
+                            default:
+                                window.location.href = 'index.html';
+                        }
+                    }, 1000);
                 }
+            } catch (error) {
+                PNK.toast.error(error.message || 'Credenciales incorrectas o error de servidor.');
             }
-
-            if (!user) {
-                PNK.toast.error('No existe una cuenta con ese correo.');
-                return;
-            }
-
-            if (user.password !== password) {
-                PNK.toast.error('Contraseña incorrecta.');
-                return;
-            }
-
-            // Verificar que el usuario esté activo
-            if (user.estado === 'deshabilitado') {
-                PNK.toast.error('Tu cuenta está deshabilitada. Contacta al administrador.');
-                return;
-            }
-
-            if (user.estado === 'pendiente') {
-                PNK.toast.warning('Tu cuenta aún está pendiente de aprobación.');
-                return;
-            }
-
-            // Crear sesión
-            var sessionData = {
-                id: user.id,
-                nombre: user.nombre,
-                email: user.email,
-                rol: user.rol
-            };
-            PNK.setSession(sessionData);
-
-            PNK.toast.success('¡Bienvenido, ' + user.nombre + '!');
-
-            // Redirigir según rol
-            setTimeout(function () {
-                switch (user.rol) {
-                    case 'admin':
-                        window.location.href = 'dashboard_admin.html';
-                        break;
-                    case 'gestor':
-                        window.location.href = 'dashboard_gestor.html';
-                        break;
-                    case 'propietario':
-                        window.location.href = 'dashboard_propietario.html';
-                        break;
-                    default:
-                        window.location.href = 'index.html';
-                }
-            }, 1000);
         });
 
         // Toggle password visibility
@@ -183,9 +158,18 @@
                 registrarUsuario(formGestor, 'gestor');
             });
         }
+
+        // Form Cliente
+        var formCliente = document.getElementById('formCliente');
+        if (formCliente) {
+            formCliente.addEventListener('submit', function (e) {
+                e.preventDefault();
+                registrarUsuario(formCliente, 'cliente');
+            });
+        }
     }
 
-    function registrarUsuario(form, rol) {
+    async function registrarUsuario(form, rol) {
         var nombre = form.querySelector('[name="nombre"]').value.trim();
         var rut = form.querySelector('[name="rut"]').value.trim();
         var fechaNacimiento = form.querySelector('[name="fechaNacimiento"]').value;
@@ -209,54 +193,51 @@
         if (!PNK.validateRUT(rut)) {
             PNK.validationError(
                 'RUT Inválido',
-                'El RUT ingresado <strong>' + PNK.escapeHTML(rut) + '</strong> no es válido.<br><br>' +
-                'Verifica el formato (ej: 12.345.678-9) y que el dígito verificador sea correcto.'
+                'El RUT ingresado no es válido.<br><br>' +
+                'Verifica el formato (ej: 12.345.678-9).'
             );
             return;
         }
 
-        // Verificar email duplicado
-        var usuarios = PNK.getData(PNK.KEYS.USUARIOS);
-        for (var i = 0; i < usuarios.length; i++) {
-            if (usuarios[i].email.toLowerCase() === email.toLowerCase()) {
-                PNK.toast.error('Ya existe una cuenta con ese correo.');
-                return;
-            }
+        // Validar fortaleza de la contraseña
+        if (!PNK.validatePasswordStrength(password)) {
+            PNK.validationError(
+                'Contraseña Débil',
+                'La contraseña debe cumplir con los siguientes requisitos mínimos:<br><br>' +
+                '<ul class="text-start" style="font-size:0.9rem; margin-left: 20px;">' +
+                '<li>Al menos <strong>8 caracteres</strong> de longitud.</li>' +
+                '<li>Al menos <strong>una letra mayúscula</strong> (A-Z).</li>' +
+                '<li>Al menos <strong>una letra minúscula</strong> (a-z).</li>' +
+                '<li>Al menos <strong>un número</strong> (0-9).</li>' +
+                '<li>Al menos <strong>un carácter especial</strong> (ej. @, $, !, %, *, ? o &).</li>' +
+                '</ul>'
+            );
+            return;
         }
 
-        // Crear usuario
-        var newUser = {
-            id: PNK.generateId(),
-            nombre: nombre,
-            rut: rut,
-            email: email,
-            telefono: telefono,
-            fechaNacimiento: fechaNacimiento,
-            sexo: sexo,
-            rol: rol,
-            estado: rol === 'gestor' ? 'pendiente' : 'activo',
-            password: password,
-            fechaCreacion: new Date().toISOString().split('T')[0]
-        };
-
-        // Propietario: campo extra
+        var nPropiedad = null;
         if (rol === 'propietario') {
-            var nPropiedad = form.querySelector('[name="nPropiedad"]');
-            if (nPropiedad) newUser.nPropiedad = nPropiedad.value.trim();
+            var nProp = form.querySelector('[name="nPropiedad"]');
+            if (nProp) nPropiedad = nProp.value.trim();
         }
 
-        usuarios.push(newUser);
-        PNK.setData(PNK.KEYS.USUARIOS, usuarios);
+        try {
+            const response = await PNK.api('auth.php?action=register', {
+                method: 'POST',
+                body: {
+                    nombre, rut, fechaNacimiento, sexo, email, telefono, password, rol, nPropiedad
+                }
+            });
 
-        if (rol === 'gestor') {
-            PNK.toast.success('Solicitud enviada. Un administrador habilitará tu cuenta.');
-        } else {
-            PNK.toast.success('¡Cuenta creada exitosamente! Ya puedes iniciar sesión.');
+            if (response.success) {
+                PNK.toast.success(response.message);
+                setTimeout(function () {
+                    window.location.href = 'login.html';
+                }, 2000);
+            }
+        } catch (error) {
+            PNK.toast.error(error.message || 'Error al registrar la cuenta.');
         }
-
-        setTimeout(function () {
-            window.location.href = 'login.html';
-        }, 2000);
     }
 
     // ── Recuperar contraseña (simulación) ─────────────────────
@@ -281,9 +262,55 @@
         });
     }
 
+    // ── Configurar navbar dinámico ─────────────────────────────
+    PNK.setupNavbar = function () {
+        var session = PNK.getSession();
+        if (!session) return;
+
+        var navbarNav = document.querySelector('.navbar-nav');
+        if (navbarNav) {
+            // Quitar link de unirte
+            var unirteLink = navbarNav.querySelector('a[href="registro.html"]');
+            if (unirteLink) {
+                unirteLink.parentElement.remove();
+            }
+
+            // Reemplazar botón Iniciar Sesión
+            var loginBtn = navbarNav.querySelector('a[href="login.html"]');
+            if (loginBtn) {
+                var li = loginBtn.parentElement;
+                
+                var portalUrl = '#';
+                var showPortal = false;
+                if (session.rol === 'admin') { portalUrl = 'dashboard_admin.html'; showPortal = true; }
+                else if (session.rol === 'gestor') { portalUrl = 'dashboard_gestor.html'; showPortal = true; }
+                else if (session.rol === 'propietario') { portalUrl = 'dashboard_propietario.html'; showPortal = true; }
+
+                var portalHtml = showPortal ? '<a class="btn btn-outline-success btn-sm rounded-pill fw-bold me-2 px-3 animate__animated animate__fadeIn" href="' + portalUrl + '"><i class="fas fa-user-shield me-1"></i> Mi Portal</a>' : '';
+
+                li.innerHTML = '<div class="d-flex align-items-center gap-2 animate__animated animate__fadeIn">' +
+                    portalHtml +
+                    '<span class="fw-bold text-success me-2 small"><i class="fas fa-user me-1"></i> ' + PNK.escapeHTML(session.nombre.split(' ')[0]) + '</span>' +
+                    '<button class="btn btn-danger btn-sm rounded-pill fw-bold px-3" id="navLogoutBtn" title="Cerrar Sesión"><i class="fas fa-sign-out-alt"></i></button>' +
+                    '</div>';
+
+                var logoutBtn = document.getElementById('navLogoutBtn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        PNK.logout();
+                    });
+                }
+            }
+        }
+    };
+
     // ── Inicialización según página actual ────────────────────
     document.addEventListener('DOMContentLoaded', function () {
         var path = window.location.pathname;
+
+        // Configurar navbar dinámico si existe
+        PNK.setupNavbar();
 
         if (path.indexOf('login.html') !== -1) {
             setupLoginPage();

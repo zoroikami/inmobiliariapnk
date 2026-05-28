@@ -1,0 +1,330 @@
+/* ============================================================
+ *  INMOBILIARIA PNK — Detalle de Propiedad
+ *  Estilos premium para la vista de detalle
+ * ============================================================ */
+
+.detail-hero {
+    position: relative;
+    height: 45vh;
+    min-height: 350px;
+    overflow: hidden;
+    border-radius: 0 0 30px 30px;
+}
+
+.detail-hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.detail-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 60%, rgba(0,0,0,0.3) 100%);
+    display: flex;
+    align-items: flex-end;
+    padding: 3rem;
+}
+
+.detail-hero-info {
+    color: white;
+    max-width: 800px;
+}
+
+.detail-hero-info h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.detail-hero-info .detail-location {
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+.detail-hero-info .detail-location i {
+    color: #f59e0b;
+}
+
+/* ── Badges ────────────────────────────────────────────────── */
+.detail-badge-operation {
+    display: inline-block;
+    padding: 6px 18px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.detail-badge-venta {
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.detail-badge-arriendo {
+    background: rgba(59, 130, 246, 0.15);
+    color: #3b82f6;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+/* ── Price Box ─────────────────────────────────────────────── */
+.detail-price-box {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    padding: 1.5rem 2rem;
+    border-radius: 16px;
+    text-align: center;
+}
+
+.detail-price-box .price-main {
+    font-size: 2rem;
+    font-weight: 800;
+    margin: 0;
+}
+
+.detail-price-box .price-secondary {
+    font-size: 0.9rem;
+    opacity: 0.85;
+    margin: 0;
+}
+
+.detail-price-box .price-operation {
+    font-size: 0.75rem;
+    opacity: 0.7;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+[data-theme="dark"] .detail-price-box {
+    background: linear-gradient(135deg, #059669, #047857);
+}
+
+/* ── Specs Grid ────────────────────────────────────────────── */
+.detail-specs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+}
+
+.detail-spec {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 1.25rem;
+    text-align: center;
+    transition: all 0.2s;
+}
+
+.detail-spec:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.detail-spec i {
+    font-size: 1.5rem;
+    color: #10b981;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.detail-spec .spec-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1f2937;
+    display: block;
+}
+
+.detail-spec .spec-label {
+    font-size: 0.75rem;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+[data-theme="dark"] .detail-spec {
+    background: #1e293b;
+    border-color: #334155;
+}
+
+[data-theme="dark"] .detail-spec .spec-value {
+    color: #e2e8f0;
+}
+
+/* ── Extras Tags ───────────────────────────────────────────── */
+.detail-extras {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.detail-extra-tag {
+    background: #f0fdf4;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.detail-extra-tag i {
+    color: #10b981;
+}
+
+[data-theme="dark"] .detail-extra-tag {
+    background: rgba(52, 211, 153, 0.1);
+    color: #34d399;
+    border-color: rgba(52, 211, 153, 0.3);
+}
+
+/* ── Description Section ───────────────────────────────────── */
+.detail-section {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    margin-bottom: 1.5rem;
+}
+
+[data-theme="dark"] .detail-section {
+    background: #1e293b;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.detail-section h3 {
+    font-weight: 700;
+    font-size: 1.15rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #f1f5f9;
+}
+
+[data-theme="dark"] .detail-section h3 {
+    border-color: #334155;
+    color: #e2e8f0;
+}
+
+.detail-description {
+    color: #4b5563;
+    line-height: 1.8;
+    font-size: 0.95rem;
+}
+
+[data-theme="dark"] .detail-description {
+    color: #94a3b8;
+}
+
+/* ── Contact Form ──────────────────────────────────────────── */
+.detail-contact-form {
+    background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+    border: 1px solid #bbf7d0;
+    border-radius: 20px;
+    padding: 2rem;
+}
+
+[data-theme="dark"] .detail-contact-form {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(16, 185, 129, 0.04));
+    border-color: rgba(52, 211, 153, 0.2);
+}
+
+/* ── Mini Map ──────────────────────────────────────────────── */
+.detail-map {
+    height: 280px;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 2px solid #e2e8f0;
+}
+
+[data-theme="dark"] .detail-map {
+    border-color: #334155;
+}
+
+/* ── Similar Properties ────────────────────────────────────── */
+.detail-similar-card {
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    transition: all 0.3s ease;
+}
+
+.detail-similar-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+}
+
+.detail-similar-card img {
+    height: 180px;
+    object-fit: cover;
+}
+
+[data-theme="dark"] .detail-similar-card {
+    background: #1e293b;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+/* ── Back Button ───────────────────────────────────────────── */
+.detail-back-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1f2937;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.detail-back-btn:hover {
+    background: white;
+    transform: scale(1.05);
+    color: #10b981;
+}
+
+[data-theme="dark"] .detail-back-btn {
+    background: rgba(30, 41, 59, 0.9);
+    border-color: #334155;
+    color: #e2e8f0;
+}
+
+/* ── Responsive ────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .detail-hero {
+        height: 35vh;
+        min-height: 250px;
+        border-radius: 0 0 20px 20px;
+    }
+
+    .detail-hero-overlay {
+        padding: 1.5rem;
+    }
+
+    .detail-hero-info h1 {
+        font-size: 1.5rem;
+    }
+
+    .detail-price-box .price-main {
+        font-size: 1.5rem;
+    }
+
+    .detail-specs {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

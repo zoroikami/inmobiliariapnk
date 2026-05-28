@@ -1,0 +1,232 @@
+/* ============================================================
+ *  INMOBILIARIA PNK — Agenda de Visitas CSS
+ * ============================================================ */
+
+.agenda-calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    background: #e2e8f0;
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.agenda-day-header {
+    background: #1f2937;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+[data-theme="dark"] .agenda-day-header {
+    background: #0c1222;
+}
+
+.agenda-day {
+    background: white;
+    padding: 10px;
+    min-height: 90px;
+    cursor: pointer;
+    transition: background 0.2s;
+    position: relative;
+}
+
+.agenda-day:hover {
+    background: #f0fdf4;
+}
+
+[data-theme="dark"] .agenda-day {
+    background: #1e293b;
+}
+
+[data-theme="dark"] .agenda-day:hover {
+    background: rgba(52, 211, 153, 0.1);
+}
+
+.agenda-day.other-month {
+    opacity: 0.3;
+}
+
+.agenda-day.today {
+    background: #f0fdf4;
+    box-shadow: inset 0 0 0 2px #10b981;
+}
+
+[data-theme="dark"] .agenda-day.today {
+    background: rgba(52, 211, 153, 0.08);
+}
+
+.agenda-day-number {
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #374151;
+    margin-bottom: 4px;
+}
+
+[data-theme="dark"] .agenda-day-number {
+    color: #e2e8f0;
+}
+
+.agenda-day-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 1px;
+}
+
+.agenda-dot-pendiente { background: #f59e0b; }
+.agenda-dot-confirmada { background: #10b981; }
+.agenda-dot-cancelada { background: #ef4444; }
+.agenda-dot-realizada { background: #3b82f6; }
+
+/* Visita Cards */
+.visit-card {
+    background: white;
+    border-radius: 14px;
+    padding: 1.25rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border-left: 4px solid #10b981;
+    margin-bottom: 1rem;
+    transition: all 0.2s;
+}
+
+.visit-card:hover {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transform: translateX(3px);
+}
+
+[data-theme="dark"] .visit-card {
+    background: #1e293b;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.visit-card.visit-pendiente { border-left-color: #f59e0b; }
+.visit-card.visit-confirmada { border-left-color: #10b981; }
+.visit-card.visit-cancelada { border-left-color: #ef4444; opacity: 0.7; }
+.visit-card.visit-realizada { border-left-color: #3b82f6; }
+
+.visit-time {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #10b981;
+}
+
+.visit-prop {
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0;
+}
+
+[data-theme="dark"] .visit-prop { color: #e2e8f0; }
+
+.visit-badge {
+    padding: 3px 10px;
+    border-radius: 50px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.visit-badge-pendiente { background: rgba(245,158,11,0.15); color: #f59e0b; }
+.visit-badge-confirmada { background: rgba(16,185,129,0.15); color: #10b981; }
+.visit-badge-cancelada { background: rgba(239,68,68,0.15); color: #ef4444; }
+.visit-badge-realizada { background: rgba(59,130,246,0.15); color: #3b82f6; }
+
+/* Calendar Nav */
+.calendar-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.calendar-nav h4 {
+    margin: 0;
+    font-weight: 700;
+}
+
+.calendar-nav-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    color: #6b7280;
+}
+
+.calendar-nav-btn:hover {
+    background: #10b981;
+    color: white;
+    border-color: #10b981;
+}
+
+[data-theme="dark"] .calendar-nav-btn {
+    border-color: #334155;
+    color: #94a3b8;
+}
+
+/* Filtro tabs */
+.agenda-filter-tabs {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+}
+
+.agenda-filter-tab {
+    padding: 6px 16px;
+    border-radius: 50px;
+    border: 1px solid #e2e8f0;
+    background: transparent;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    color: #6b7280;
+}
+
+.agenda-filter-tab.active,
+.agenda-filter-tab:hover {
+    background: #10b981;
+    color: white;
+    border-color: #10b981;
+}
+
+[data-theme="dark"] .agenda-filter-tab {
+    border-color: #334155;
+    color: #94a3b8;
+}
+
+/* Empty State */
+.agenda-empty {
+    text-align: center;
+    padding: 3rem;
+    color: #9ca3af;
+}
+
+.agenda-empty i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .agenda-day {
+        min-height: 50px;
+        padding: 4px;
+    }
+    .agenda-day-number {
+        font-size: 0.7rem;
+    }
+}

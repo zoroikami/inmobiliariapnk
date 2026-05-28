@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Agenda de visitas a propiedades - Inmobiliaria PNK.">
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <title>Inmobiliaria PNK - Agenda de Visitas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/agenda.css">
+    <link rel="stylesheet" href="css/dark-mode.css">
+    <script src="js/dark-mode.js"></script>
+</head>
+<body>
+
+<div class="d-flex">
+    <aside class="sidebar" id="sidebarNav">
+        <div class="profile">
+            <div class="avatar"><i class="fas fa-user-tie"></i></div>
+            <h3>Gestor</h3>
+            <p>gestor@pnk.cl</p>
+        </div>
+        <nav id="sidebarLinks">
+            <!-- Populated by JS based on role -->
+        </nav>
+    </aside>
+
+    <main class="main">
+        <header class="topbar border-bottom pb-3 mb-4">
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <div>
+                    <h4 class="mb-0 text-muted">Agenda: <span class="text-dark fw-bold" id="topbarName">-</span></h4>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <div class="notif-wrapper">
+                        <button class="notif-bell-btn" title="Notificaciones">
+                            <i class="fas fa-bell"></i>
+                            <span class="notif-badge">0</span>
+                        </button>
+                        <div class="notif-panel" id="notifPanel">
+                            <div class="notif-header">
+                                <h6><i class="fas fa-bell me-2"></i>Notificaciones</h6>
+                                <button class="notif-mark-all" id="notifMarkAll">Marcar todas</button>
+                            </div>
+                            <div class="notif-list" id="notifList"></div>
+                        </div>
+                    </div>
+                    <button class="dark-mode-toggle" title="Cambiar tema">
+                        <i class="fas fa-moon icon-moon"></i>
+                        <i class="fas fa-sun icon-sun"></i>
+                    </button>
+                    <a href="login.html" class="btn btn-outline-danger btn-sm px-4 rounded-pill">
+                        <i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <div class="container-fluid py-2">
+            <div class="row g-4">
+                <!-- Calendario -->
+                <div class="col-lg-7">
+                    <div class="bg-white p-4 rounded-4 shadow-sm">
+                        <div class="calendar-nav">
+                            <button class="calendar-nav-btn" id="calendarPrev"><i class="fas fa-chevron-left"></i></button>
+                            <h4 id="calendarMonthLabel">-</h4>
+                            <button class="calendar-nav-btn" id="calendarNext"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                        <div class="agenda-calendar" id="agendaCalendar"></div>
+                    </div>
+
+                    <!-- Formulario nueva visita -->
+                    <div class="bg-white p-4 rounded-4 shadow-sm mt-4" id="formSection">
+                        <h5 class="fw-bold mb-3"><i class="fas fa-plus-circle text-success me-2"></i>Agendar Nueva Visita</h5>
+                        <form id="formNuevaVisita">
+                            <div class="row g-3">
+                                <div class="col-md-12">
+                                    <label class="form-label small fw-bold">Propiedad</label>
+                                    <select class="form-select" id="visitProp" required>
+                                        <option value="">Seleccionar propiedad...</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold">Fecha</label>
+                                    <input type="date" class="form-control" id="visitFecha" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold">Hora (09:00 - 19:00)</label>
+                                    <input type="time" class="form-control" id="visitHora" min="09:00" max="19:00" required>
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="form-label small fw-bold">Notas</label>
+                                    <textarea class="form-control" id="visitNotas" rows="2" placeholder="Observaciones opcionales..."></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-success rounded-pill px-4 fw-bold">
+                                        <i class="fas fa-calendar-plus me-2"></i>Agendar Visita
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Lista de visitas -->
+                <div class="col-lg-5">
+                    <div class="bg-white p-4 rounded-4 shadow-sm">
+                        <h5 class="fw-bold mb-3"><i class="fas fa-list-ul text-primary me-2"></i>Mis Visitas</h5>
+
+                        <div class="agenda-filter-tabs">
+                            <button class="agenda-filter-tab active" data-filter="todas">Todas</button>
+                            <button class="agenda-filter-tab" data-filter="pendiente">Pendientes</button>
+                            <button class="agenda-filter-tab" data-filter="confirmada">Confirmadas</button>
+                            <button class="agenda-filter-tab" data-filter="realizada">Realizadas</button>
+                            <button class="agenda-filter-tab" data-filter="cancelada">Canceladas</button>
+                        </div>
+
+                        <div id="visitList"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="js/utils.js"></script>
+<script src="js/notifications.js"></script>
+<script src="js/app.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/notification-center.js"></script>
+<script src="js/agenda.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var session = PNK.protectRoute(['gestor', 'propietario', 'admin']);
+        PNK.showUserInfo();
+        PNK.setupLogout();
+
+        if (!session) return;
+
+        // Update topbar name
+        document.getElementById('topbarName').textContent = session.nombre.toUpperCase();
+
+        // Build sidebar based on role
+        var nav = document.getElementById('sidebarLinks');
+        var links = '';
+
+        if (session.rol === 'admin') {
+            links += '<a href="dashboard_admin.html"><i class="fas fa-th-large"></i> Dashboard</a>';
+            links += '<a href="mantenedor_usuarios.html"><i class="fas fa-users"></i> Mantene. Usuarios</a>';
+            links += '<a href="mantenedor_propiedades.html"><i class="fas fa-building"></i> Mantene. Propiedades</a>';
+        } else if (session.rol === 'gestor') {
+            links += '<a href="dashboard_gestor.html"><i class="fas fa-th-large"></i> Dashboard</a>';
+            links += '<a href="mantenedor_propiedades.html"><i class="fas fa-building"></i> Mis Propiedades</a>';
+        } else {
+            links += '<a href="dashboard_propietario.html"><i class="fas fa-th-large"></i> Dashboard</a>';
+        }
+        links += '<a href="mensajes.html"><i class="fas fa-comments"></i> Mensajes</a>';
+        links += '<a href="agenda_visitas.html" class="active"><i class="fas fa-calendar-check"></i> Agenda de Visitas</a>';
+        links += '<div class="mt-auto pt-4"><a href="login.html" class="text-danger"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></div>';
+        nav.innerHTML = links;
+
+        // Hide form for propietarios (view-only)
+        if (session.rol === 'propietario') {
+            var formSection = document.getElementById('formSection');
+            if (formSection) formSection.style.display = 'none';
+        }
+    });
+</script>
+</body>
+</html>

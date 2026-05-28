@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Mensajería interna - Inmobiliaria PNK.">
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <title>Inmobiliaria PNK - Mensajes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/chat.css">
+    <link rel="stylesheet" href="css/dark-mode.css">
+    <script src="js/dark-mode.js"></script>
+</head>
+<body>
+
+<div class="d-flex">
+    <aside class="sidebar" id="sidebarNav">
+        <div class="profile">
+            <div class="avatar"><i class="fas fa-user-tie"></i></div>
+            <h3>Usuario</h3>
+            <p>user@pnk.cl</p>
+        </div>
+        <nav id="sidebarLinks">
+            <!-- Populated by JS based on role -->
+        </nav>
+    </aside>
+
+    <main class="main">
+        <header class="topbar border-bottom pb-3 mb-4">
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <div>
+                    <h4 class="mb-0 fw-bold"><i class="fas fa-comments text-success me-2"></i>Mensajería</h4>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <div class="notif-wrapper">
+                        <button class="notif-bell-btn" title="Notificaciones">
+                            <i class="fas fa-bell"></i>
+                            <span class="notif-badge">0</span>
+                        </button>
+                        <div class="notif-panel" id="notifPanel">
+                            <div class="notif-header">
+                                <h6><i class="fas fa-bell me-2"></i>Notificaciones</h6>
+                                <button class="notif-mark-all" id="notifMarkAll">Marcar todas</button>
+                            </div>
+                            <div class="notif-list" id="notifList"></div>
+                        </div>
+                    </div>
+                    <button class="dark-mode-toggle" title="Cambiar tema">
+                        <i class="fas fa-moon icon-moon"></i>
+                        <i class="fas fa-sun icon-sun"></i>
+                    </button>
+                    <a href="login.html" class="btn btn-outline-danger btn-sm px-4 rounded-pill">
+                        <i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Chat Layout -->
+        <div class="chat-layout">
+            <!-- Conversations List -->
+            <div class="chat-conversations">
+                <div class="chat-conversations-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-inbox me-2"></i>Conversaciones</h5>
+                    <button class="btn btn-success btn-sm rounded-pill px-3" id="btnNewConv" title="Nueva conversación">
+                        <i class="fas fa-pen-to-square me-1"></i> Nueva
+                    </button>
+                </div>
+                <div class="chat-conversations-list" id="chatConvList">
+                    <!-- Rendered by JS -->
+                </div>
+            </div>
+
+            <!-- Messages Area -->
+            <div class="chat-messages">
+                <div class="chat-messages-header" id="chatMsgHeader" style="display: none;">
+                    <button class="btn btn-sm btn-outline-secondary rounded-pill d-md-none" id="chatBackBtn">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <div>
+                        <h6 id="chatHeaderName">-</h6>
+                        <small class="text-muted" id="chatHeaderRole">-</small>
+                    </div>
+                </div>
+                <div class="chat-messages-body" id="chatMsgBody">
+                    <div class="chat-empty">
+                        <i class="fas fa-paper-plane"></i>
+                        <p>Selecciona una conversación para comenzar</p>
+                    </div>
+                </div>
+                <div class="chat-input-area" id="chatInputArea" style="display: none;">
+                    <input type="text" class="chat-input" id="chatInput" placeholder="Escribe un mensaje..." autocomplete="off">
+                    <button class="chat-send-btn" id="chatSendBtn" title="Enviar">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="js/utils.js"></script>
+<script src="js/notifications.js"></script>
+<script src="js/app.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/notification-center.js"></script>
+<script src="js/chat.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var session = PNK.protectRoute(['gestor', 'propietario', 'admin']);
+        PNK.showUserInfo();
+        PNK.setupLogout();
+
+        if (!session) return;
+
+        // Build sidebar based on role
+        var nav = document.getElementById('sidebarLinks');
+        var links = '';
+
+        if (session.rol === 'admin') {
+            links += '<a href="dashboard_admin.html"><i class="fas fa-th-large"></i> Dashboard</a>';
+            links += '<a href="mantenedor_usuarios.html"><i class="fas fa-users"></i> Mantene. Usuarios</a>';
+            links += '<a href="mantenedor_propiedades.html"><i class="fas fa-building"></i> Mantene. Propiedades</a>';
+        } else if (session.rol === 'gestor') {
+            links += '<a href="dashboard_gestor.html"><i class="fas fa-th-large"></i> Dashboard</a>';
+            links += '<a href="mantenedor_propiedades.html"><i class="fas fa-building"></i> Mis Propiedades</a>';
+        } else {
+            links += '<a href="dashboard_propietario.html"><i class="fas fa-th-large"></i> Dashboard</a>';
+            links += '<a href="mapa_interactivo.html"><i class="fas fa-search"></i> Ver Mapa</a>';
+        }
+        links += '<a href="mensajes.html" class="active"><i class="fas fa-comments"></i> Mensajes</a>';
+        links += '<a href="agenda_visitas.html"><i class="fas fa-calendar-check"></i> Agenda Visitas</a>';
+        links += '<div class="mt-auto pt-4"><a href="login.html" class="text-danger"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></div>';
+        nav.innerHTML = links;
+    });
+</script>
+</body>
+</html>

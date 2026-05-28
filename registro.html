@@ -11,13 +11,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dark-mode.css">
+    <script src="js/dark-mode.js"></script>
     <style>
         .tab-content {
             display: none;
         }
 
         #tab1:checked~.content-propietario,
-        #tab2:checked~.content-gestor {
+        #tab2:checked~.content-gestor,
+        #tab3:checked~.content-cliente {
             display: block;
         }
 
@@ -26,9 +29,10 @@
             padding: 1rem;
             border-radius: 10px;
             transition: 0.3s;
-            width: 50%;
+            width: 33.33%;
             text-align: center;
             font-weight: bold;
+            font-size: 0.9rem;
         }
 
         #tab1:checked~.tabs .btn-propietario {
@@ -37,6 +41,11 @@
         }
 
         #tab2:checked~.tabs .btn-gestor {
+            background: #10b981;
+            color: white;
+        }
+
+        #tab3:checked~.tabs .btn-cliente {
             background: #10b981;
             color: white;
         }
@@ -60,10 +69,12 @@
 
                     <input type="radio" name="role" id="tab1" class="d-none" checked>
                     <input type="radio" name="role" id="tab2" class="d-none">
+                    <input type="radio" name="role" id="tab3" class="d-none">
 
                     <div class="tabs d-flex gap-2 mb-5">
-                        <label for="tab1" class="tab-btn btn-propietario bg-light border">Registrarme como PROPIETARIO</label>
-                        <label for="tab2" class="tab-btn btn-gestor bg-light border">Registrarme como GESTOR FREE</label>
+                        <label for="tab1" class="tab-btn btn-propietario bg-light border btn-propietario">PROPIETARIO</label>
+                        <label for="tab2" class="tab-btn btn-gestor bg-light border btn-gestor">GESTOR FREE</label>
+                        <label for="tab3" class="tab-btn btn-cliente bg-light border btn-cliente">USUARIO NORMAL</label>
                     </div>
 
                     <!-- Form Propietario -->
@@ -174,6 +185,55 @@
                                 <input type="password" class="form-control" name="password" placeholder="••••••••" required>
                             </div>
                             <button type="submit" class="btn btn-success btn-lg w-100 rounded-pill fw-bold">Solicitar Registro como Gestor Free</button>
+                        </form>
+                    </div>
+
+                    <!-- Form Cliente -->
+                    <div class="tab-content content-cliente">
+                        <h4 class="fw-bold mb-4"><i class="fas fa-user text-info me-2"></i> Registro de Usuario Normal
+                        </h4>
+                        <p class="text-muted small mb-4">Regístrate para buscar propiedades, agendar visitas y contactar gestores.</p>
+                        <form id="formCliente">
+                            <div class="row g-3">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Nombre Completo</label>
+                                    <input type="text" class="form-control" name="nombre" placeholder="Juan Pérez" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">RUT</label>
+                                    <input type="text" class="form-control" name="rut" placeholder="12.345.678-9" required>
+                                </div>
+                            </div>
+                            <div class="row g-3">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Fecha de Nacimiento</label>
+                                    <input type="date" class="form-control" name="fechaNacimiento" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Sexo</label>
+                                    <select class="form-select" name="sexo" required>
+                                        <option value="" selected disabled>Seleccionar...</option>
+                                        <option value="M">Masculino</option>
+                                        <option value="F">Femenino</option>
+                                        <option value="O">Otro</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row g-3">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Correo Electrónico</label>
+                                    <input type="email" class="form-control" name="email" placeholder="usuario@ejemplo.com" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Teléfono Móvil</label>
+                                    <input type="tel" class="form-control" name="telefono" placeholder="+56 9 1234 5678" required>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Contraseña</label>
+                                <input type="password" class="form-control" name="password" placeholder="••••••••" required>
+                            </div>
+                            <button type="submit" class="btn btn-success btn-lg w-100 rounded-pill fw-bold">Crear Cuenta de Usuario</button>
                         </form>
                     </div>
 
